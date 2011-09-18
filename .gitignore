@@ -1,0 +1,11 @@
+/app/etc/local.xml
+/media/catalog/product/cache
+/var/cache
+/var/session
+/var/log
+/var/report
+/var/locks
+/loginfo.txt
+/psd
+/export
+/downloader/connec.cfg
