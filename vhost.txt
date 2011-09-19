@@ -1,0 +1,21 @@
+<VirtualHost 127.0.0.12>
+  ServerName magento_bootstrap
+
+  DocumentRoot "D:/Work/magento_bootstrap/"
+  DirectoryIndex index.php
+  <Directory "D:/Work/magento_bootstrap/">
+    Allow from All
+	AllowOverride All
+	Options +FollowSymLinks +ExecCGI
+	<IfModule mod_rewrite.c>
+	  RewriteEngine On
+
+	  RewriteRule ^$ index.html [QSA]
+	  RewriteRule ^([^.]+)$ $1.html [QSA]
+	  RewriteCond %{REQUEST_FILENAME} !-f
+
+	  # no, so we redirect to our front web controller
+	  RewriteRule ^(.*)$ index.php [QSA,L]
+	</IfModule>
+  </Directory>
+</VirtualHost>
