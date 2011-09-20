@@ -1,5 +1,5 @@
 <VirtualHost 127.0.0.12>
-  ServerName magento_bootstrap
+  ServerName magento-bootstrap.com
 
   DocumentRoot "D:/Work/magento_bootstrap/"
   DirectoryIndex index.php
