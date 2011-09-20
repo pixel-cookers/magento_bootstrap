@@ -109,6 +109,19 @@ class Mage_Page_Block_Html_Head extends Mage_Core_Block_Template
     }
 
     /**
+     * Add google font only to HEAD entity
+     *
+     * @param string $name
+     * @param string $params
+     * @return Mage_Page_Block_Html_Head
+     */
+    public function addGoogleFont($name, $params = "")
+    {
+        $this->addItem('google_font', $name, $params);
+        return $this;
+    }
+
+    /**
      * Add Link element to HEAD entity
      *
      * @param string $rel forward link types
@@ -188,6 +201,7 @@ class Mage_Page_Block_Html_Head extends Mage_Core_Block_Template
                 case 'js_css':    // js/*.css
                 case 'skin_css':  // skin/*/*.css
                 case 'less_css':  // skin/*/*.less
+                case 'google_font':  // skin/*/*.css
                     $lines[$if][$item['type']][$params][$item['name']] = $item['name'];
                     break;
                 default:
@@ -213,6 +227,11 @@ class Mage_Page_Block_Html_Head extends Mage_Core_Block_Template
                 array(),
                 empty($items['less_css']) ? array() : $items['less_css'],
                 null
+            );
+
+            // google font css files
+            $html .= $this->_prepareGoogleFont('<link href="http://fonts.googleapis.com/css?family=%s" rel="stylesheet" type="text/css" />' . "\n",
+                empty($items['google_font']) ? array() : $items['google_font']
             );
 
             // static and skin css
@@ -294,6 +313,32 @@ class Mage_Page_Block_Html_Head extends Mage_Core_Block_Template
                 foreach ($rows as $src) {
                     $html .= sprintf($format, $src, $params);
                 }
+            }
+        }
+        return $html;
+    }
+
+    /**
+     * Merge static and skin files of the same format into 1 set of HEAD directives or even into 1 directive
+     *
+     * Will attempt to merge into 1 directive, if merging callback is provided. In this case it will generate
+     * filenames, rather than render urls.
+     * The merger callback is responsible for checking whether files exist, merging them and giving result URL
+     *
+     * @param string $format - HTML element format for sprintf('<element src="%s"%s />', $src, $params)
+     * @param array $skinItems - array of relative names of skin items to be found in skins according to design config
+     * @return string
+     */
+    protected function &_prepareGoogleFont($format, array $items)
+    {
+        $html = '';
+        foreach ($items as $params => $rows){
+            // render elements
+            $params = trim($params);
+            $params = $params ? ' ' . $params : '';
+            foreach ($rows as $src){
+                $src = str_replace(' ', '+', $src);
+                $html .= sprintf($format, $src);
             }
         }
         return $html;
