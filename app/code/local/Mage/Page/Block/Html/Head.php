@@ -337,6 +337,7 @@ class Mage_Page_Block_Html_Head extends Mage_Core_Block_Template
             $params = trim($params);
             $params = $params ? ' ' . $params : '';
             foreach ($rows as $src){
+                $src = ucwords($src);
                 $src = str_replace(' ', '+', $src);
                 $html .= sprintf($format, $src);
             }
