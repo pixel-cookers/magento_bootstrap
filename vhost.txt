@@ -1,4 +1,4 @@
-<VirtualHost 127.0.0.12>
+<VirtualHost *:80>
   ServerName magento-bootstrap.com
 
   DocumentRoot "D:/Work/magento_bootstrap/"
