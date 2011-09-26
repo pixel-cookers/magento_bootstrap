@@ -1,10 +1,15 @@
+/.buildpath
+/.project
+/.settings
 /app/etc/local.xml
 /media/catalog/product/cache
+/media/tmp
 /var/cache
 /var/session
 /var/log
 /var/report
 /var/locks
+/var/resource_config.json
 /loginfo.txt
 /psd
 /export
