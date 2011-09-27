@@ -1,0 +1,233 @@
+[2.4.1 - 24 août 2011]
+Modification légère du code php pour éviter un plantage avec certaines versions d'eAccelerator (cache php)
+		$row = null;
+		$this->addMessage('info',$row,null,'Ignored lines %s','<div class="code">'.trim($config_string).'</div>');
+	au lieu de ;
+		$this->addMessage('info',$row=null,null,'Ignored lines %s','<div class="code">'.trim($config_string).'</div>');
+	(cf http://www.magentocommerce.com/boards/viewthread/233202/)
+Ajout des variables de debug "info.server.os" et "info.server.software"
+Ajout de la possibilité de récupérer la valeur minimum ou maximum de la quantité (ex: "{max product.quantity}")
+
+[2.4.0 - 27 juin 2011]
+Correction d'un bug lorsque plusieurs produits identiques avec des options différentes sont présents dans le panier (la valeur de l'option était toujours égale à celle du premier produit)
+Ajout de la possibilité d'utiliser les expressions régulières dans les champs "destination" et "origin"
+Ajout de la variable {car.weight.for-charge}
+Mise à jour de la documentation en français
+Mise à jour de l'éditeur
+Correction d'un bug de l'éditeur lorsqu'on éditait une destination puis qu'on cliquait sur Annuler
+
+[2.3.11 - 28 avril 2011]
+Correction d'un problème d'encodage/décodage entre le javascript et le php via ajax (les signes "+" disparaissaient)
+Surcharge du fichier Mage/Checkout/controllers/CartController.php pour corriger un problème avec Magento : les champs Mage_Sales_Quote_Item->_data['tax_amount'] n'étaient pas mis à jour correctement, ce qui créait un décalage et faussait la variable {cart.price+tax+discount}
+
+[2.3.10 - 12 avril 2011]
+Correction d'un problème dans AjaxController.php : passage direct d'un tableau par référence, il faut d'abord créer le tableau dans une variable puis passer la variable par référence
+Ajout de la variable {cart.coupon}
+Ajout des variables {cart.price-tax+discount}, {cart.price-tax-discount}, {cart.price+tax+discount}, {cart.price+tax-discount} qui permettent d'avoir le montant que l'on désire, avec ou sans prise en compte des taxes et des remises
+Gestion semblable pour les attributs des produits : product.attribute.price-tax+discount utilisable dans une structure {sum} par exemple
+Ajout de la possibilité de récupérer la valeur minimum ou maximum d'un attribut ou d'une option (utilisation identique à sum)
+
+[2.3.9 - 20 janvier 2011]
+Correction d'un problème avec le fichier adminhtml.xml (il y avait un commentaire avant l'en-tête XML)
+
+[2.3.8 - 14 janvier 2011]
+Correction d'un bug avec la propriété "customer_groups" lorsqu'on utilisait les id's (is_int remplacé par ctype_digit)
+Modifications des champs de configuration :
+- Le champ "debug" devient de type Oui/Non
+- Le champ "auto-compression" devient "compression" de type Oui/Non
+Implémentation d'une compression efficace :
+- La configuration est compressée à l'aide de la fonction gzcompress() puis encodée en base 64 afin d'être facilement placée dans un champ textarea
+- La longueur de configuration peut être divisée par 4 grâce à la compression
+- La compression peut être utile sur certaines configurations où la longueur des champs est limitée
+Amélioration de l'éditeur :
+- Récupération des groupes utilisateurs de Magento et création d'un bouton pour chacun d'eux
+- Ajout d'un bouton "Aide" (qui ouvre l'aide de l'éditeur) à droite du bouton "Ouvrir l'éditeur"
+- Centralisation du changelog dans un fichier app/code/community/Owebia/Shipping2/changelog plutôt que dans les fichiers de langue
+- L'éditeur compresse/décompresse la configuration (si la compression est activée)
+Amélioration du debug
+- Ajout des versions de PHP et de Magento
+- Correction du chemin du fichier OwebiaShippingHelper.php
+- Affichage du debug par la commande Mage::getSingleton('core/session')->addNotice() afin d'avoir un affichage plus propre (à l'intérieur des balises html)
+- Affichage du debug seulement sur la page checkout/cart/index
+Création d'un fichier app/code/community/Owebia/Shipping2/etc/adminhtml.xml (pour résoudre les problèmes d'accès à la section de configuration Owebia)
+Mise à jour des tarifs par défaut avec les tarifs Colissimo Particuliers 2010 et Chronopost web 2010
+
+[2.3.7 - 11 janvier 2011]
+Modification de la récupération du timestamp courant en tenant compte du fuseau horaire sélectionné
+Modification du CSS de l'éditeur pour palier à une modification du CSS du backoffice (sur les balises legend)
+Ajout de contrôles isset dans le fichier app/code/community/Owebia/Shipping2/controllersAjaxController.php (merci à Damien C.)
+Échappement des guillemets doubles dans la méthode _getConfig() dans le fichier js/owebia/shipping2/os2editor.js (merci à Damien C.)
+Ajout de la méthode getRates() dans la classe Owebia_Shipping2_Model_Carrier_AbstractOwebiaShipping qui permet de récupérer les frais de port en injectant les données que l'on souhaite en paramètre
+Réécriture de la méthode collectRates()
+
+[2.3.6 - 23 novembre 2010]
+Ajout d'un fichier app/etc/modules/Owebia_Shipping_2.xml vide pour écraser celui des versions précédentes à la 2.3.0 afin d'éviter une cohabitation de deux versions
+Amélioration du traitement des commentaires avec l'éditeur (gestion des caractères #)
+
+[2.3.5 - 08 novembre 2010]
+Correction d'un problème chez les utilisateurs ayant une version de PHP antérieure à 5.3.0
+
+[2.3.4 - 06 novembre 2010]
+Correction d'un bug introduit dans la version 2.3.2 lors de l'utilisation des attributs et options avec les fonctions sum, count et count distinct
+
+[2.3.3 - 05 novembre 2010]
+Possibilité de faire des copie de propriétés de façon récursive avec contrôle de boucle infinie
+
+[2.3.2 - 05 novembre 2010]
+Amélioration de l'éditeur :
+- Ajout de l'aide en langue anglais
+- Ajout d'informations dans l'aide
+- Ajout des messages d'erreur de la configuration, avec possibilité de correction rapide
+- Ajout de champs pour les lignes ignorées : on peut ainsi les modifier et appliquer les modifications
+Ajout de la possibilité d'accéder aux informations sur le stock d'un produit grâce aux variables {product.stock.is_in_stock} et {product.stock.quantity}
+Suppression de l'affichage du message d'erreur ""Correspondance non trouvée""
+Correction d'un bug avec les groupes utilisateur ($id==null retournait true lorsque $id était égal à 0)
+Correction d'une erreur de récupération de l'unité de poids
+Améliorations diverses
+
+[2.3.1 - 29 octobre 2010]
+Correction d'un bug dans le fichier AjaxController : une variable n'était pas définie, ce qui générait une erreur avec certaines configurations PHP
+
+[2.3.0 - 28 octobre 2010]
+Correction d'un bug avec le caractère * dans les champs ""destination"" et ""origin"" comme jocker
+Ajout d'un éditeur pour faciliter la modification des configurations Owebia Shipping
+L'éditeur contient également une aide
+Déplacement de certains fichiers pour mieux correspondre à la structure de Magento
+
+[2.2.8 - 20 octobre 2010]
+Correction d'une erreur dans l'include d'OwebiaShippingHelper lorsqu'on utilise le Compiler
+Correction d'un bug de calcul du prix TTC dans certains cas ('row_total_with_discount' est égal à 0)
+Ajout de la possibilité d'utiliser le caractère * dans les champs ""destination"" et ""origin"" comme jocker (par exemple ""FR(25*)"" retournera vrai pour tous les codes postaux du département du Doubs)
+Ajout d'un bouton pour fermer la console de debug
+Ajout d'informations dans le debug (tests sur la destination et l'origine, liste des variables passées en paramètre)
+Affichage du debug uniquement sur la page panier (pas sur les pages en ajax)
+Récupération du bon customer group lors d'une commande créée depuis le backoffice de Magento
+
+[2.2.7 - 27 août 2010]
+Possibilité d'utiliser les variables personnalisées (custom variables) de Magento grâce à la syntaxe {customvar.my_var} ou à la syntaxe standard {{customVar code=my_var}}
+
+[2.2.6 - 25 août 2010]
+Correction d'un bug avec la fonction getRowProperty() : utilisation de preg_match_all() à la place de while(preg_match()) et utilisation de continue à la place de break
+
+[2.2.5 - 22 août 2010]
+Correction d'un bug avec les propriétés de type booléenne spécifiées sans les guillemets (comme la propriété enabled)
+Correction d'un bug avec la propriété customer_groups
+
+[2.2.4 - 10 août 2010]
+Utilisation de Mage::getModel('directory/country')->load($country_code)->getName() à la place de Mage::getModel('core/locale')->getLocale()->getTranslationList('territory',null,2) pour récupérer le nom d'un pays dans la langue courante (la première solution semble retourner le nom du pays dans la langue principale de la boutique), merci à coolshop pour la solution proposée
+Remplacement de la valeur de configuration ""Afficher quand indisponible"" par la valeur ""Debug"" car la solution précédente posait des problèmes avec Magento 1.4.0
+Amélioration de la clarté du debug (utilisation de couleurs et d'indentations)
+Correction de bugs légers
+Mise à jour de la syntaxe de la configuration proposée par défaut
+
+[2.2.3 - 29 juillet 2010]
+Correction d'un bug avec le traitement de formules dont le résultat est false
+
+[2.2.2 - 29 juillet 2010]
+Amélioration du système de cache des formules
+
+[2.2.1 - 27 juillet 2010]
+Correction de petits bugs
+
+[2.2.0 - 22 juillet 2010]
+Possibilité de compression/décompression de la configuration
+Modification de certaines propriétés ({weight} => {cart.weight}, {price_excluding_tax} => {cart.price_excluding_tax}, {price_including_tax} => {cart.price_including_tax}, {products_quantity} => {cart.quantity},{contry} => {destination.country.name})
+Syntaxe légèrement modifié pour {product.attribute.xxx} et {product.option.xxx} (pas de s)
+Ajout de nouvelles propriétés utilisables dans le foreach : {selection.weight}, {selection.quantity}, {product.weight}, {product.quantity}
+Possibilité d'utiliser {product.attribute.xxx} et {product.option.xxx} dans le foreach
+
+[2.1.9 - 20 juillet 2010]
+Évaluation des formules contenues dans les propriétés ""label"" et ""description""
+
+[2.1.8 - 20 juillet 2010]
+Correction d'une erreur dans le foreach (l'attribut était toujours ""name"")
+
+[2.1.7 - 19 juillet 2010]
+Ajout de la syntaxe foreach product.attribute.xxx
+
+[2.1.6 - 28 décembre 2009]
+Correction d'une erreur dans le nom d'une variable qui entrainait un plantage dans certaines situations
+
+[2.1.5 - 28 décembre 2009]
+Modification de la syntaxe des tables (pour offrir plus de souplesse)
+
+[2.1.4 - 24 décembre 2009]
+Modification de la syntaxe d'utilisation des propriétés des produits (pour offrir beaucoup plus de souplesse)
+Possibilité de filtrer les produits dont on veut utiliser les propriétés.
+Ajout de 'COUNT DISTINCT'
+
+[2.1.3 - 17 décembre 2009]
+Correction du calcul du nombre de produits dont les propriétés correspondent ""{count ..."" : prise en compte de la quantité
+Simplification de la syntaxe de copie de propriété
+
+[2.1.2 - 27 novembre 2009]
+Correction d'un problème de priorité entre l'opérateur ""="" et l'opérateur ""and"" dans l'évaluation des formules : ajout de parenthèses autour de la formule
+
+[2.1.1 - 26 novembre 2009]
+Suppression de la propriété 'product_properties' qui doit être utilisée dans la propriété 'conditions'
+Améliorations diverses
+
+[2.1.0 - 24 novembre 2009]
+Regroupement des propriétés 'fees_table', 'fees_formula' et 'fixed_fees' dans une unique propriété 'fees'
+Regroupement des propriétés 'prices_range' et 'weights_range' dans une unique propriété 'conditions'
+Suppression de la propriété 'reference_value'
+Suppression des propriétés 'free_shipping__fees_table', 'free_shipping__fees_formula' et 'free_shipping__fixed_fees' (utiliser '{free_shipping}' dans la propriété 'conditions' à la place)
+Ajout d'un analyseur de syntaxe de la configuration pour indiquer l'utilisation de propriétés non reconnues ou de propriétés obsolètes, les valeurs non reconnues, les virgules manquantes en fin de ligne, les doublons des propriétés 'code'
+Utilisation des valeurs des propriétés obsolètes dans leur nouvel équivalent
+Possibilité de copier une propriété avec la syntaxe ""{copy 'colissimo'.'fees'}""
+Nouvelle syntaxe pour les tables (ancienne propriété 'fees_table') : ""{table 'weight' 1.0:2.50, 2.0:3.00}"" qui peuvent désormais être intégrées dans des formules
+Séparation des méthodes publique, privées génériques (préfixe '_'), privées spécifiques à Magento (préfixe '__') pour faciliter le portage du module vers un autre système de boutique en ligne que Magento
+
+[2.0.12 - 19 novembre 2009]
+Amélioration de la transmission des variables entre les méthodes de la classe
+
+[2.0.11 - 19 novembre 2009]
+Correction du filtrage en fonction des options et des attributs des produits en présence de produits configurables
+
+[2.0.10 - 13 novembre 2009]
+Amélioration du filtrage en fonction des options et des attributs des produits
+Correction du filtrage en fonction des options des produits
+
+[2.0.9 - 12 novembre 2009]
+Correction du filtrage en fonction des options des produits
+
+[2.0.8 - 12 novembre 2009]
+Possibilité de filtrer en fonction des options des produits
+
+[2.0.7 - 04 novembre 2009]
+Possibilité de filtrer en fonction de l'origine de livraison
+Possibilité de filtrer en fonction des attributs de produits
+Possibilité de spécifier un code postal dans le filtrage de la destination
+Compatibilité avec Magento 1.4.* : utilisation de la fonction getTranslationList au lieu de getCountryTranslationList qui est dépréciée
+
+[2.0.6 - 02 octobre 2009]
+Possibilité de spécifier des groupes de clients
+
+[2.0.5 - 18 août 2009]
+Ajout de la possibilité de spécifier dans la destination le monde entier sauf certains pays
+Correction d'un problème de parsing de la destination lorsqu'il n'y avait qu'un seul code région entre parenthèses
+Possibilité d'avoir des codes région comprenant des espaces
+
+[2.0.4 - 28 juillet 2009]
+Suppression des options ""Unité de poids"" et ""Utiliser le montant TTC"" de chaque mode de livraison
+Possibilité d'inclure ou d'exclure les valeurs limites dans les champs 'prices_range', 'weights_range' et 'fees_table' grâce aux caractères '[' et ']'
+Possibilité de spécifier dans les champs 'prices_range' et 'fees_table' si on utilise le montant HT ou TTC
+Ajout du champ 'enabled' et suppression de la possibilité de désactiver un bloc de configuration avec le caractère '#'
+Modification du message d'erreur par défaut
+Ajout d'un message d'erreur en cas d'erreur d'interprétation d'une formule de calcul de frais
+
+[2.0.3 - 27 juillet 2009]
+Correction d'une erreur dans l'interprétation des formules avec des fonctions à arguments multiples (min, max, rand)
+
+[2.0.2 - 27 juin 2009]
+Correction d'une erreur d'expression régulière
+
+[2.0.1 - 25 juin 2009]
+Uniformisation du nom des variables dans les valeurs de référence : 'price_excluding_tax' et 'price_including_tax' à la place de la valeur 'price'
+Correction d'un problème de Magento qui ne semble pas retourner la bonne valeur lors de l'appel à la méthode $request->getFreeShipping()
+Ajout du champ 'description' qui permet d'ajouter une description à une méthode de livraison qui peut être récupérée grâce à la méthode $_rate->getMethodDescription()
+Corrections de bugs
+
+[2.0 - 3 avril 2009]
+Création de la version 2.0 du module Owebia Shipping qui n'est plus compatible avec les anciennes versions
+

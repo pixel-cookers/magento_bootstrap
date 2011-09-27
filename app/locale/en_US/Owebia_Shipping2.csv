@@ -1,0 +1,871 @@
+# en-US
+"No match found","No match found"
+"Configuration disabled","Configuration disabled"
+"The cart doesn't match conditions","The cart doesn't match conditions"
+"The shipping method doesn't cover the zone","The shipping method doesn't cover the zone"
+"The shipping method doesn't match to shipping origin","The shipping method doesn't match to shipping origin"
+"The shipping method doesn't match to customer group (%s)","The shipping method doesn't match to customer group (%s)"
+"Infinite loop %s","Infinite loop %s"
+"Non-existent property %s","Non-existent property %s"
+"Error in table %s","Error in table %s"
+"Invalid formula","Invalid formula"
+"Unrecognized value of deprecated property %s %s","Unrecognized value of deprecated property %s %s"
+"Usage of deprecated syntax %s","Usage of deprecated syntax %s"
+"Usage of unknown properties %s","Usage of unknown properties %s"
+"Usage of deprecated properties %s","Usage of deprecated properties %s"
+"Usage of obsolete method to disabling a shipping method (`#` before `{`)%s","Usage of obsolete method to disabling a shipping method (`#` before `{`)%s"
+"A semicolon is missing at the end of following lines %s","A semicolon is missing at the end of following lines %s"
+"Ignored lines %s","Ignored lines %s"
+"The property `code` must be unique, `%s` has been found twice","The property `code` must be unique, `%s` has been found twice"
+"There are unwanted spaces after char `%s`","There are unwanted spaces after char `%s`"
+"There are unwanted spaces before char `%s`","There are unwanted spaces before char `%s`"
+"There are multiples spaces","There are multiples spaces"
+
+"track the package","track the package"
+
+"Configuration","Configuration"
+"{debug_help}","Debug displayed on cart while making a shipping estimation"
+"{compression_help}","Gz + base64 compression. This is the editor that compress/uncompress."
+"Tracking URL","Tracking URL"
+"Debug","Debug"
+"Compression","Compression"
+"Stop to first match","Stop to first match"
+"Owebia Shipping module","Owebia Shipping module"
+"Weight unit","Weight unit"
+
+# OS2Editor
+	# Owebia_Shipping2_Block_Adminhtml_System_Config_Form_Field_Config
+		"Open editor","Open editor"
+		"Help","Help"
+	# Owebia_Shipping2_AjaxController
+		"Owebia Shipping 2 configuration editor","Owebia Shipping 2 configuration editor"
+		"Save","Save"
+		"Cancel","Cancel"
+		"Close","Close"
+		"Load","Load"
+		"Export","Export"
+		"Add a shipping method","Add a shipping method"
+		"New shipping method","New shipping method"
+		"Delete","Delete"
+		"Weight","Weight"
+		"Products quantity","Products quantity"
+		"Quantity","Quantity"
+		"Price including tax","Price including tax"
+		"Price excluding tax","Price excluding tax"
+		"Not logged in","Not logged in"
+		"Tracking number","Tracking number"
+		"Insert","Insert"
+		"Cart","Cart"
+		"Selection","Selection"
+		"Product","Product"
+		"Display","Display"
+		"Display original input","Display original input"
+		"Display corrected names","Display corrected names"
+		"Display codes","Display codes"
+		"Limit to","Limit to"
+		"Exclude","Exclude"
+		"Destination country","Destination country"
+		"Cart weight","Cart weight"
+		"Cart quantity","Cart quantity"
+		"Disabled","Disabled"
+		"Ignored lines","Ignored lines"
+		"Correct","Correct"
+		"Apply changes","Apply changes"
+		# Fields
+			"Enabled","Enabled"
+			"Code","Code"
+			"Label","Label"
+			"Description","Description"
+			"Destination","Destination"
+			"Origin","Origin"
+			"Conditions","Conditions"
+			"Fees","Fees"
+			"Customer groups","Customer groups"
+			"Tracking url","Tracking url"
+			"Comment","Comment"
+		# Donate
+			"You appreciate this extension and would like to help?","You appreciate this extension and would like to help?"
+			"Donate","Donate"
+			"Support the development of Owebia Shipping 2 extension","Support the development of Owebia Shipping 2 extension"
+			"{os2editor.donate-page.content}","<p>L'extension Owebia Shipping 2 est développée bénévolement par l'entreprise Owebia (<a href=""http://www.owebia.com/"">http://www.owebia.com/</a>).<br/>Si vous souhaitez soutenir financièrement le développement de l'extension, vous pouvez faire un &laquo;&nbsp;don&nbsp;&raquo;.</p><p>En France, seules certaines associations peuvent recevoir des dons, c'est pourquoi nous ne pouvons recevoir une somme d'argent sans qu'elle soit déclarée.<br/>Pour cela, nous enverrons à chaque &laquo;&nbsp;donateur&nbsp;&raquo; une facture (acquitée) du montant du &laquo;&nbsp;don&nbsp;&raquo;.</p><p>Cela permettra à chacun de garder une trace de ces &laquo;&nbsp;dons&nbsp;&raquo;.</p><p><strong>Pour effectuer un &laquo;&nbsp;don&nbsp;&raquo;, merci d'envoyer un chèque à l'adresse suivante :</strong></p><p class=""owebia-address"">Owebia<br/>4, Rue du Collège<br/>25500 Morteau (France)</p><p><strong>N'oubliez pas de joindre à ce chèque les coordonnées qui doivent figurer sur la facture qui vous sera envoyée.</strong></p><p>Merci à tous les donateurs.</p>"
+		# JS
+			"Dissociate","Dissociate"
+			"Remove","Remove"
+			"Edit","Edit"
+			"Enter the new value:","Enter the new value:"
+			"[No label]","[No label]"
+			"Loading...","Loading..."
+		# Help
+			"Owebia Shipping 2 extension help","Owebia Shipping 2 extension help"
+			"{os2editor.help.summary}","
+<h4>Summary</h4>
+<p>
+	The english version of the documentation is not up to date. If you can read french, please use the french version.
+</p>
+<div class=""table-of-contents"">
+<ul>
+	<li><a href=""#"" onclick=""os2editor.help('introduction');"">Introduction</a></li>
+	<li><a href=""#"" onclick=""os2editor.help('property.label');"">The label : `label`</a></li>
+	<li><a href=""#"" onclick=""os2editor.help('property.fees');"">Shipping fees : `fees`</a>
+		<ul>
+			<li><a href=""#"" onclick=""os2editor.help('more.formulas');"">Introduction to formulas</a></li>
+			<li><a href=""#"" onclick=""os2editor.help('more.tables');"">Use of rate tables</a></li>
+			<li><a href=""#"" onclick=""os2editor.help('more.copy');"">Make a copy of a property of another method</a></li>
+			<li><a href=""#"" onclick=""os2editor.help('more.special-functions');"">Special functions in formulas</a></li>
+			<li class=""new""><a href=""#"" onclick=""os2editor.help('more.attributes-options');"">Usage of product's attributes or options</a> (stock data added in version 2.3.2)</li>
+			<li class=""new""><a href=""#"" onclick=""os2editor.help('more.foreach');"">Usage of foreach loops</a> (added in version 2.1.7)</li>
+			<li class=""new""><a href=""#"" onclick=""os2editor.help('more.custom-variables');"">Usage of Magento's custom variables</a> (added in version 2.2.7)</li>
+		</ul>
+	</li>
+	<li><a href=""#"" onclick=""os2editor.help('property.conditions');"">The conditions : `conditions`</a></li>
+	<li><a href=""#"" onclick=""os2editor.help('property.destination');"">The destination : `destination`</a></li>
+	<li><a href=""#"" onclick=""os2editor.help('property.code');"">The code : `code`</a></li>
+	<li><a href=""#"" onclick=""os2editor.help('property.description');"">The description : `description`</a></li>
+	<li><a href=""#"" onclick=""os2editor.help('property.origin');"">The origin : `origin`</a></li>
+	<li><a href=""#"" onclick=""os2editor.help('property.customer_groups');"">Customer groups : `customer_groups`</a></li>
+	<li><a href=""#"" onclick=""os2editor.help('property.tracking_url');"">Tracking URL : `tracking_url`</a></li>
+	<li><a href=""#"" onclick=""os2editor.help('property.*comment');"">Comments</a></li>
+	<li><a href=""#"" onclick=""os2editor.help('changelog');"">Changelog</a></li>
+</ul>
+</div>
+
+"
+			"{os2editor.help.introduction}","
+<div class=""help-header"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+
+<h4>Introduction</h4>
+<p>
+	If you have a question, use the following topic : <a href=""http://www.magentocommerce.com/boards/viewthread/38223/"" target=\"_blank\">http://www.magentocommerce.com/boards/viewthread/38223/</a>
+</p>
+
+<p>
+	The configuration syntax is similar to JSON syntax.
+</p>
+<p>
+
+	Example :
+</p>
+<div class=""code""><span class=""comment""># National</span><br/>
+{<br/>
+&nbsp;&nbsp;&nbsp;label: <span class=""string"">""National""</span>,<br/>
+&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""AD,FR,MC""</span>,<br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{cart.price_excluding_tax}&lt;1000.00""</span>,<br/>
+
+&nbsp;&nbsp;&nbsp;fees: <span class=""string"">""1.30 + {table {cart.weight} in 0.5:5.30, 1.0:6.50, 2.0:7.40, 3.0:8.30, 5.0:10.10}""</span>,<br/>
+}</div>
+
+<p>
+	The character `#` at the beginning of a line indicates a comment.<br/>
+	A configuration element begins with the character `{` and ends with `}`.<br/>
+	A configuration element contains several properties associated with values.<br/>
+
+	The properties are alphanumeric (a-z0-9_), the separator property/value is the character `:`, values are numeric, boolean or string delimited by quotation marks. At the end of a line, a comma is the separator between the various properties.
+</p>
+<p>
+	List of properties:
+</p>
+<ul>
+	<li><b>label</b>: name (label)</li>
+	<li><b>description</b>: description (only visible if template show it)</li>
+	<li><b>code</b>: shipping method's code (optional but if specified it must be unique)</li>
+	<li><b>enabled</b>: configuration bloc activated or not (ex: <span class=""value"">true</span> or <span class=""value"">false</span>)</li>
+	<li class=""new""><b>fees</b>: shipping fees (ex: <span class=""value"">""15.00""</span> or <span class=""value"">""{table {cart.weight} in 0.5:5.30, 1.0:6.50}""</span> or <span class=""value"">""100 * {cart.weight}""</span>)</li>
+	<li class=""new""><b>conditions</b>: activation conditions (ex: <span class=""value"">""{cart.weight}&gt;=1.0""</span> or <span class=""value"">""{cart.price_excluding_tax}&lt;100.00""</span> or <span class=""value"">""({cart.weight}&lt;=1.0) and ({cart.weight}&gt;3.0) and {free_shipping}""</span> or <span class=""value"">""{count products where product.attribute.color=='Bleu'}>1 or {count products where product.option.size=='2m'}>2""</span>)</li>
+	<li><b>destination</b>: countries (possibly regions) authorized in destination (ex: <span class=""value"">""FR,DE,US""</span> or <span class=""value"">""FR(2A,2B,25000)""</span> or <span class=""value"">""FR-(2A,2B)""</span> or <span class=""value"">""FR(01,02,39600),CH,DE""</span>)</li>
+	<li class=""new""><b>origin</b>: countries (possibly regions) authorized in origin (ex: <span class=""value"">""FR,DE,US""</span> or <span class=""value"">""FR(2A,2B,25000)""</span> or <span class=""value"">""FR-(2A,2B)""</span> or <span class=""value"">""FR(01,02,39600),CH,DE""</span>)</li>
+	<li class=""new""><b>customer_groups</b>: customer groups authorized (ex: <span class=""value"">""NOT LOGGED IN,Retailer""</span> or <span class=""value"">""0,3""</span>)</li>
+</ul>
+
+<div class=""help-footer"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+
+"
+			"{os2editor.help.property.label}","
+<div class=""help-header"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+
+<h4>The label : `label`</h4>
+<p>This will be the name given to the shipping method.</p>
+<p>Elements such as the weight of goods can be inserted in the label.<br/>
+To do this, use the following variables:</p>
+<ul>
+	<li><b>{destination.country.name}</b>: destination country name</li>
+	<li><b>{destination.country.code}</b>: destination country code</li>
+	<li><b>{destination.region.code}</b>: destination region code</li>
+	<li><b>{destination.postcode}</b>: destination postcode</li>
+	<li><b>{origin.country.name}</b>: origin country name</li>
+	<li><b>{origin.country.code}</b>: origin country code</li>
+	<li><b>{origin.region.code}</b>: origin region code</li>
+	<li><b>{origin.postcode}</b>: origin postcode</li>
+	<li><b>{cart.weight}</b>: weight of goods</li>
+	<li><b>{cart.weight.unit}</b>: weight unit</li>
+	<li><b>{cart.quantity}</b>: products quantity</li>
+	<li><b>{cart.price_including_tax}</b>: price including tax</li>
+	<li><b>{cart.price_excluding_tax}</b>: price excluding tax</li>
+	<li><b>{store.code}</b>: store code</li>
+	<li><b>{store.name}</b>: store name</li>
+	<li><b>{store.address}</b>: store address</li>
+	<li><b>{store.phone}</b>: store phone</li>
+	<li><b>{date.timestamp}</b>: UNIX timestamp of current date</li>
+	<li><b>{date.year}</b>: year of current date</li>
+	<li><b>{date.month}</b>: month of current date</li>
+	<li><b>{date.day}</b>: day of current date</li>
+	<li><b>{date.hour}</b>: hour of current date</li>
+	<li><b>{date.minute}</b>: minute of current date</li>
+	<li><b>{date.second}</b>: second of current date</li>
+</ul>
+<div class=""code"">label: <span class=""string"">""Colissimo ({cart.weight} / {destination.country.name})""</span>,</div>
+<p>This line will display for example ""Colissimo (3.0kg / France)"".</p>
+
+<div class=""help-footer"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+"
+			"{os2editor.help.property.fees}","
+<div class=""help-header"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+
+<h4>Shipping fees : `fees`</h4>
+<p>
+	The property `fees` is specified as a <a href=""#"" onclick=""os2editor.help('more.formulas');"">formula (see introduction to formulas)</a>.
+</p>
+
+<div class=""code""><span class=""comment""># Fixed fees</span><br/>fees: 10.00,<br/>
+<br/>
+<span class=""comment""># Rates table</span><br/>fees: <span class=""string"">""{table {cart.weight} in 0.5:5.30, 1.0:6.50}""</span>,<br/>
+<br/>
+<span class=""comment""># Formula</span><br/>fees: <span class=""string"">""0.1 * {cart.price_excluding_tax} + 10.00""</span>,<br/>
+<br/>
+<span class=""comment""># Combination</span><br/>fees: <span class=""string"">""0.1 * {cart.price_excluding_tax} + {table {cart.weight} in 0.5:5.30, 1.0:6.50} + 10.00""</span>,
+</div>
+
+<div class=""help-footer"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+"
+			"{os2editor.help.more.formulas}","
+<div class=""help-header"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+
+<h4>Introduction to formulas</h4>
+<p>
+	Properties `fees` and `conditions` are specified as formulas.
+</p>
+<p>
+	Mathematical signs available:
+</p>
+<ul>
+	<li>operators: *, /, + et -</li>
+	<li>modulo: %</li>
+	<li>brackets: ( et )</li>
+	<li>boolean operators &amp;&amp;, and, ||, or, ==, &lt;, &gt;, &lt;=, &gt;=</li>
+	<li>binary operators &amp; et |</li>
+	<li>operators group C ? X : Y (ex: ""{cart.price_exluding_tax}&gt;100 ? 15*{cart.weight} : 20*{cart.weight}"")</li>
+</ul>
+<p>
+	Functions available:
+</p>
+<ul>
+	<li>rounds: round(x), floor(x), ceil(x)</li>
+	<li>absolute value: abs(x)</li>
+	<li>maximum: max(x,y)</li>
+	<li>minimum: min(x,y)</li>
+	<li>random integer: rand(min,max)</li>
+	<li>power: pow(x,puissance)</li>
+	<li>PI number: pi()</li>
+	<li>square root: sqrt(x)</li>
+	<li>logarithm: log(x) for the natural logarithm or log(x,base)</li>
+	<li>exponential: exp(x)</li>
+</ul>
+<p>
+	Ability to use advanced features like: casting to integer (int) casting to floating number (float), comparison with null or boolean values true and false.
+</p>
+<p>
+	Variables available:
+</p>
+<ul>
+
+	<li><b>{cart.weight}</b>: full package weight</li>
+	<li><b>{cart.price_including_tax}</b>: price including tax</li>
+	<li><b>{cart.price_excluding_tax}</b>: price excluding tax</li>
+	<li><b>{cart.quantity}</b>: items count in cart</li>
+	<li><b>{date.timestamp}</b>: UNIX timestamp of current date</li>
+	<li><b>{date.year}</b>: year of current date</li>
+	<li><b>{date.month}</b>: month of current date</li>
+	<li><b>{date.day}</b>: day of current date</li>
+	<li><b>{date.hour}</b>: hour of current date</li>
+	<li><b>{date.minute}</b>: minute of current date</li>
+	<li><b>{date.second}</b>: second of current date</li>
+	<li><b>{free_shipping}</b>: free shipping (offered by a Magento rule) [true/false]</li>
+</ul>
+<p>
+	You can put spaces and line returns in formulas (to air).
+</p>
+<p class=""new"" style=""font-weight: bold;"">
+	You can also use advanced features such as rates tables, copy of a property of another method,
+	special functions, usage of product's attributes and options or usage of custom variables.
+</p>
+
+<div class=""help-footer"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+"
+			"{os2editor.help.more.tables}","
+<div class=""help-header"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+
+<h4>Usage of rates tables</h4>
+<p>
+	In a table, you can include or exclude a limit value with characters '[' and ']' :
+</p>
+<div class=""code""><span class=""comment""># Upper limit 1.0 included</span><br/>
+fees: <span class=""string"">""{table {cart.weight} in 1.0]:5.00}""</span>,<br/>
+<br/>
+<span class=""comment""># Upper limit 1.0 excluded</span><br/>
+fees: <span class=""string"">""{table {cart.weight} in 1.0[:5.00}""</span>,</div>
+
+<p>
+	In a table, you must specify the reference value. For this, we can use one of the available variables.<br/>
+	You can also use a formula to define another reference variable.
+</p>
+
+<div class=""code""><span class=""comment""># Limit values are compared to the cart's weight</span><br/>
+fees: <span class=""string"">""{table {cart.weight} in 0.5:5.30, 1.0:6.50}""</span>,<br/>
+<br/>
+<span class=""comment""># Limit values are compared to the items count</span><br/>
+fees: <span class=""string"">""{table {cart.quantity} in 10:5.30, 20:6.50}""</span>,<br/>
+<br/>
+<span class=""comment""># Limit values are compared to the prixe including tax</span><br/>
+fees: <span class=""string"">""{table {cart.price_including_tax} in 15.00:5.30, 30.00:6.50}""</span>,<br/>
+<br/>
+<span class=""comment""># Limit values are compared to the prixe excluding tax</span><br/>
+fees: <span class=""string"">""{table {cart.price_excluding_tax} in 15.00:5.30, 30.00:6.50}""</span>,<br/>
+<br/>
+<span class=""comment""># Limit values are compared to an user defined reference value</span><br/>
+fees: <span class=""string"">""{table ceil({cart.weight}/10) in 1:5.30, 2:6.50}""</span>,
+</div>
+
+<div class=""help-footer"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+"
+			"{os2editor.help.more.copy}","
+<div class=""help-header"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+
+<h4>Make a copy of a property of another method</h4>
+<p>
+	It is possible to make a copy of a property in another using the syntax below.
+</p>
+<p>
+	You can use this technique in the properties 'conditions', 'fees',
+	'enabled', 'label', 'description', 'destination', 'origin', 'customer_groups' and 'tracking_url'
+	<strong>but not in property 'code'</strong>.
+</p>
+
+<div class=""code""><span class=""comment""># Colissimo</span><br/>
+{<br/>
+&nbsp;&nbsp;&nbsp;code: <span class=""string"">""colissimo""</span>,<br/>
+&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Colissimo""</span>,<br/>
+&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""AD,FR,MC""</span>,<br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{cart.price_excluding_tax}&lt;1000.00""</span>,<br/>
+&nbsp;&nbsp;&nbsp;fees: <span class=""string"">""1.30 + {table {cart.weight} in 0.5:5.30, 1.0:6.50, 2.0:7.40, 3.0:8.30, 5.0:10.10}""</span>,<br/>
+}<br/>
+...<br/>
+&nbsp;&nbsp;&nbsp;<span class=""comment""># Copy conditions of another method</span><br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""({colissimo.conditions}) and ({cart.weight}&gt;10.0)""</span>,<br/>
+...<br/>
+&nbsp;&nbsp;&nbsp;<span class=""comment""># Copy shipping fees of another method</span><br/>
+&nbsp;&nbsp;&nbsp;fees: <span class=""string"">""({colissimo.fees}) + 15.00""</span>,<br/>
+...
+</div>
+
+<div class=""help-footer"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+"
+			"{os2editor.help.more.special-functions}","
+<div class=""help-header"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+
+<h4>Special functions in formulas</h4>
+
+<p>
+	You can use special functions in formulas.
+</p>
+<p>
+	List of special functions :
+</p>
+<ul>
+	<li><b>min(x,y) :</b> calculate the minimum of several values (possibly more than two values). If one value is null, it is ignored.</li>
+	<li><b>max(x,y) :</b> calculate the maximum of several values (possibly more than two values). If one value is null, it is ignored.</li>
+</ul>
+
+<div class=""code""><span class=""comment""># Example of usage of the min function to propose Free shipping<br/>
+# and supplements for faster shipping methods</span><br/>
+{<br/>
+&nbsp;&nbsp;&nbsp;code: <span class=""string"">""courrier_suivi""</span>,<br/>
+&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Courrier suivi""</span>,<br/>
+&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""FR""</span>,<br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{cart.price_including_tax}&lt;80""</span>,<br/>
+&nbsp;&nbsp;&nbsp;fees: <span class=""string"">""{table {cart.weight} in 0.050:2.21, 0.100:2.77, 0.500:4.60}""</span>,<br/>
+}<br/>
+<br/>
+{<br/>
+&nbsp;&nbsp;&nbsp;code: <span class=""string"">""courrier_suivi_offert""</span>,<br/>
+&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Free shipping - Courrier suivi""</span>,<br/>
+&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""{courrier_suivi.destination}""</span>,<br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{cart.price_including_tax}&gt;=80 and {cart.weight}&lt;=0.500""</span>,<br/>
+&nbsp;&nbsp;&nbsp;fees: 0.00,<br/>
+}<br/>
+<br/>
+{<br/>
+&nbsp;&nbsp;&nbsp;code: <span class=""string"">""lettre_recommandee""</span>,<br/>
+&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Lettre Recommandée""</span>,<br/>
+&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""FR""</span>,<br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{cart.price_including_tax}&lt;80""</span>,<br/>
+&nbsp;&nbsp;&nbsp;fees: <span class=""string"">""{TABLE {cart.weight} IN 0.050:4.3,0.100:4.75,0.250:5.62,0.500:6.42,1.000:7.32,2.000:8.56,10.000:10.30}""</span>,<br/>
+}<br/>
+<br/>
+{<br/>
+&nbsp;&nbsp;&nbsp;code: <span class=""string"">""lettre_recommandee_offert""</span>,<br/>
+&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Free shipping - Lettre Recommandée""</span>,<br/>
+&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""{lettre_recommandee.destination}""</span>,<br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{cart.price_including_tax}&gt;=80 and {cart.weight}&gt;0.500 and {cart.weight}&lt;=10.000""</span>,<br/>
+&nbsp;&nbsp;&nbsp;fees: 0.00,<br/>
+}<br/>
+<br/>
+{<br/>
+&nbsp;&nbsp;&nbsp;code: <span class=""string"">""supplement_lettre_recommandee""</span>,<br/>
+&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Lettre Recommandée supplement""</span>,<br/>
+&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""{lettre_recommandee.destination}""</span>,<br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{courrier_suivi_offert.conditions}""</span>,<br/>
+&nbsp;&nbsp;&nbsp;fees: <span class=""string"">""{lettre_recommandee.fees} - {courrier_suivi.fees}""</span>,<br/>
+}<br/>
+<br/>
+{<br/>
+&nbsp;&nbsp;&nbsp;code: <span class=""string"">""colissimo""</span>,<br/>
+&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Colissimo""</span>,<br/>
+&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""FR""</span>,<br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{cart.price_including_tax}&lt;80""</span>,<br/>
+&nbsp;&nbsp;&nbsp;fees: <span class=""string"">""{table {cart.weight} in 0.3:8.7,0.8:9.9,1.8:10.85,2.8:11.8,4.8:13.7,6.8:15.6,9.8:18.45,14.8:20.45,29.8:26.45}""</span>,<br/>
+}<br/>
+<br/>
+{<br/>
+&nbsp;&nbsp;&nbsp;code: <span class=""string"">""colissimo_offert""</span>,<br/>
+&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Free shipping - Colissimo""</span>,<br/>
+&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""{colissimo.destination}""</span>,<br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{cart.price_including_tax}&gt;=80 and {cart.weight}&gt;10 and {cart.weight}&lt;=29.8""</span>,<br/>
+&nbsp;&nbsp;&nbsp;fees: 0.00,<br/>
+}<br/>
+<br/>
+{<br/>
+&nbsp;&nbsp;&nbsp;code: <span class=""string"">""supplement_colissimo""</span>,<br/>
+&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Colissimo supplement""</span>,<br/>
+&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""{colissimo.destination}""</span>,<br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{courrier_suivi_offert.conditions} or {lettre_recommandee_offert.conditions}""</span>,<br/>
+&nbsp;&nbsp;&nbsp;fees: <span class=""string"">""{colissimo.fees} - min({courrier_suivi.fees},{lettre_recommandee.fees})""</span>,<br/>
+}<br/>
+<br/>
+{<br/>
+&nbsp;&nbsp;&nbsp;code: <span class=""string"">""chronopost""</span>,<br/>
+&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Chronopost""</span>,<br/>
+&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""FR""</span>,<br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{cart.price_including_tax}&lt;80""</span>,<br/>
+&nbsp;&nbsp;&nbsp;fees: <span class=""string"">""{TABLE {cart.weight} IN 1:13.29, 2:13.99, 3:18.4, 4:19.24, 5:20.08, 6:20.92, 7:21.76, 8:22.6, 9:23.44, 10:24.28, 15:28.48, 20:32.68, 25:36.88, 30:41.08}""</span>,<br/>
+}<br/>
+<br/>
+{<br/>
+&nbsp;&nbsp;&nbsp;code: <span class=""string"">""chronopost_offert""</span>,<br/>
+&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Free shipping - Chronopost""</span>,<br/>
+&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""FR""</span>,<br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{cart.price_including_tax}&lt;80 and {cart.weight}&gt;29.8 and {cart.weight}&lt;=30""</span>,<br/>
+&nbsp;&nbsp;&nbsp;fees: 0.00,<br/>
+}<br/>
+<br/>
+{<br/>
+&nbsp;&nbsp;&nbsp;code: <span class=""string"">""supplement_chronopost""</span>,<br/>
+&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Chronopost supplement""</span>,<br/>
+&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""{chronopost.destination}""</span>,<br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{courrier_suivi_offert.conditions} or {lettre_recommandee_offert.conditions} or {colissimo_offert.conditions}""</span>,<br/>
+&nbsp;&nbsp;&nbsp;fees: <span class=""string"">""{chronopost.fees} - min({courrier_suivi.fees},{lettre_recommandee.fees},{colissimo.fees})""</span>,<br/>
+}
+</div>
+
+<div class=""help-footer"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+"
+			"{os2editor.help.more.attributes-options}","
+<div class=""help-header"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+
+<h4>Usage of product's attributes or options</h4>
+
+<p>
+	It is possible to use product's attributes or options with the syntax below.
+</p>
+<p>
+	You can use this technique in the properties 'conditions' and 'fees'.
+</p>
+
+<div class=""code""><span class=""comment""># If at least one product has the attribute 'color' equal to 'Blue'<br/></span>
+conditions: <span class=""string"">""{count products where product.attribute.color=='Bleu'}&gt;0""</span>,<br/>
+...<br/>
+<span class=""comment""># If all products have the option 'size' greater or equal to '1'<br/></span>
+conditions: <span class=""string"">""{count products where product.option.size&gt;='1'}=={cart.quantity}""</span>,<br/>
+...<br/>
+<span class=""comment""># Different SKU count<br/></span>
+conditions: <span class=""string"">""{count distinct product.attribute.sku}""</span>,<br/>
+...<br/>
+<span class=""comment""># The sum of all options 'size' is greater than '1'<br/></span>
+conditions: <span class=""string"">""{sum product.option.size}&gt;30""</span>,<br/>
+...<br/>
+<span class=""comment""># Count of products in stock<br/></span>
+conditions: <span class=""string"">""{count products where product.stock.is_in_stock==true}""</span>,<br/>
+...</div>
+
+<p>
+	Available prefixes list:
+</p>
+<ul>
+	<li><b>count:</b> count (always followed by 'products')</li>
+	<li><b>count distinct:</b> distinct count (always followed by a property)</li>
+	<li><b>sum:</b> sum (always followed by a property)</li>
+</ul>
+<p>
+	Available properties list:
+</p>
+<ul>
+	<li><b>product.attribute.* :</b> attribute<br/>Interesting attributes:
+		<ul>
+			<li><b>sku :</b> the sku</li>
+			<li><b>name :</b> the name</li>
+			<li><b>weight :</b> the weight</li>
+			<li><b>price :</b> the price (as filled in product's card)</li>
+			<li><b>special_price :</b> the special price (as filled in product's card)</li>
+		</ul>
+	</li>
+	<li><b>product.option.* :</b> option</li>
+	<li><b>product.stock.is_in_stock :</b> product availability</li>
+	<li><b>product.stock.quantity :</b> stock quantity of the product</li>
+</ul>
+<p>
+	It's possible to specify conditions that must be met by products to be taken into account. To do this, simply add <span class=""code""> where </span> followed by a formula.
+</p>
+<p>
+	If the property type is <strong>Yes/No</strong>, you should use <span class=""code"">true</span>/<span class=""code"">false</span> or <span class=""code"">1</span>/<span class=""code"">0</span> without quotes. 
+</p>
+<div class=""code""><span class=""comment""># Property Yes/No</span><br/>
+conditions: <span class=""string"">""{count products where product.attribute.colissimo_allowed==1}""</span>,<br/>
+<span class=""comment""># or</span><br/>
+conditions: <span class=""string"">""{count products where product.attribute.colissimo_allowed==true}""</span>,</div>
+
+<p>
+	If the property type is <strong>Drop-down</strong> and you want to make a comparison with the id rather than with the value, you must use the following syntax:
+</p>
+
+<div class=""code""><span class=""comment""># Condition validated if the attribute 'color' is equal to the value whose id is 1</span><br/>
+conditions: <span class=""string"">""{count products where product.attribute.color.id==1}""</span>,</div>
+
+<div class=""help-footer"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+"
+			"{os2editor.help.more.foreach}","
+<div class=""help-header"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+
+<h4>Usage of foreach loops</h4>
+<p>
+	Foreach loops can perform calculations on groups of products rather than consider all the products in the basket.<br/>
+	The overall result of a foreach loop is the sum of the results of each pass through the loop.
+</p>
+<p>
+	Inside a foreach loop, it is possible to use new variables:
+</p>
+<ul>
+	<li><b>{selection.weight}</b>: selection weight</li>
+	<li><b>{selection.quantity}</b>: items count in the selection</li>
+</ul>
+<p>
+	When the selection is done on the sku, each selection is composed of a single article. We can use other variables:
+</p>
+<ul>
+	<li><b>{product.weight}</b>: weight of selected product</li>
+	<li><b>{product.quantity}</b>: quantity of selected product</li>
+	<li><b>{product.attribute.*}</b>: attribute of the selected product</li>
+	<li><b>{product.option.*}</b>: option of the selected product</li>
+</ul>
+
+<div class=""code""><span class=""comment""># Grouping products by origin and treat groups seperatly</span><br/>
+fees: <span class=""string"">""{foreach product.attribute.code_origin}{table {selection.weight} in 0.0:0.00, 1.0:11.00, 3.0:12.00, 5.0:13.00}{/foreach}""</span>,<br/>
+<br/>
+<span class=""comment""># Individual calculation of shipping fees</span><br/>
+fees: <span class=""string"">""{foreach product.attribute.sku}{product.attribute.shipping}*{product.quantity}{/foreach}""</span>,<br/>
+</div>
+
+<div class=""help-footer"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+"
+			"{os2editor.help.more.custom-variables}","
+<div class=""help-header"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+
+<h4>Usage of Magento's Custom Variables</h4>
+<p>
+	Since version 1.4.0.1 of Magento, it is possible to define custom variables.
+</p>
+<p>
+	Version 2.2.7 of Owebia Shipping allows you to use these custom variables using the following syntax:
+</p>
+<div class=""code""><span class=""comment""># Usage of custom variable my_var<br/></span>
+fees: <span class=""string"">""{customvar.my_var}*5.00""</span>,<br/>
+...<br/>
+<span class=""comment""># The same using the standard syntax of Magento<br/></span>
+fees: <span class=""string"">""{{customVar code=my_var}}*5.00""</span>,<br/>
+...</div>
+
+<div class=""help-footer"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+"
+			"{os2editor.help.property.conditions}","
+<div class=""help-header"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+
+<h4>The conditions : `conditions`</h4>
+<p>
+	The property `conditions` is specified as a <a href=""#"" onclick=""os2editor.help('more.formulas');"">formula (see introduction to formulas)</a>
+	that must return a boolean value (true or false).
+</p>
+
+<div class=""code""><span class=""comment""># Prices range</span><br/>
+<br/>
+&nbsp;&nbsp;&nbsp;<span class=""comment""># From 0 to 70 including tax</span><br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{cart.price_including_tax}&lt;=70""</span>,<br/>
+
+<br/>
+&nbsp;&nbsp;&nbsp;<span class=""comment""># From 0 to 70 excluding tax</span><br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{cart.price_excluding_tax}&lt;=70""</span>,<br/>
+<br/>
+&nbsp;&nbsp;&nbsp;<span class=""comment""># From 20 excluded to 70 included</span><br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""({cart.price_excluding_tax} &gt; 20) and ({cart.price_excluding_tax} &lt;= 70)""</span>,<br/>
+<br/>
+&nbsp;&nbsp;&nbsp;<span class=""comment""># From 10 included to 50 excluded</span><br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""({cart.price_excluding_tax} &gt;= 10) and ({cart.price_excluding_tax} &lt; 50)""</span>,<br/>
+
+<br/>
+<br/>
+<span class=""comment""># Weights range</span><br/>		
+<br/>
+&nbsp;&nbsp;&nbsp;<span class=""comment""># From 0.5 excluded to 3 included</span><br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""({cart.weight} &gt; 0.5) and ({cart.weight} &lt;= 3.0)""</span>,<br/>
+<br/>
+&nbsp;&nbsp;&nbsp;<span class=""comment""># From 1 included to 5 excluded</span><br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""({cart.weight} &gt;= 1.0) and ({cart.weight} &lt; 5.0)""</span>,<br/>
+<br/>
+<br/>
+<span class=""comment""># Frais de port offerts</span><br/>
+
+<br/>
+&nbsp;&nbsp;&nbsp;<span class=""comment""># Uniquement si frais de port offerts</span><br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{free_shipping}""</span>,<br/>
+<br/>
+&nbsp;&nbsp;&nbsp;<span class=""comment""># Uniquement si frais de port non offerts</span><br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""!{free_shipping}""</span>,<br/>
+<br/>
+<br/>
+<span class=""comment""># Product's attribute or option</span><br/>		
+<br/>
+&nbsp;&nbsp;&nbsp;<span class=""comment""># If at least one product has the attribute 'color' equal to 'Blue'</span><br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{count products where product.attribute.color=='Bleu'}&gt;1""</span>,<br/>
+<br/>
+&nbsp;&nbsp;&nbsp;<span class=""comment""># If all products have the option 'size' greater or equal to '1'</span><br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{count products where product.option.size&gt;='1'}=={cart.quantity}""</span>,</div>
+
+<div class=""help-footer"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+
+"
+			"{os2editor.help.property.destination}","
+<div class=""help-header"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+
+<h4>The destination : `destination`</h4>
+<p>
+	The country codes used are those of Magento (it seem that they are the same as the codes ISO 3166-1 alpha-2).<br/>
+	It is possible to specify region codes <span class=""new"">or postcodes</span> that you want to filter or exclude.
+</p>
+
+<div class=""code""><span class=""comment""># France, Germany, Switzerland, Spain, Italy</span><br/>
+destination: <span class=""string"">""FR,DE,CH,ES,IT""</span>,<br/>
+<br/>
+<span class=""comment""># France without Corsica</span><br/>
+destination: <span class=""string"">""FR-(2A,2B)""</span>,<br/>
+
+<br/>
+<span class=""comment""># Corsica</span><br/>
+destination: <span class=""string"">""FR(2A,2B)""</span>,<br/>
+<br/>
+<span class=""comment""># World without Germany and Corsica</span><br/>
+destination: <span class=""string"">""* - ( DE, FR(2A,2B) )""</span>,</div>
+
+<div class=""tips"">
+	<p><strong>Tip</strong><br/>In the editor, you can use countries codes but countries names and shortcuts to insert a group of countries too.</p>
+	<ul>
+		<li><strong>UE</strong> or <strong>Union Européenne</strong> : adds the European Union countries.</li>
+		<li><strong>DOM</strong> : adds French Overseas Departments.</li>
+		<li><strong>COM</strong> : adds French Overseas Communities.</li>
+		<li><strong>Outre-Mer</strong> : adds the whole French Overseas.</li>
+		<li><strong>Corse</strong> : adds Corsica (""FR(2A,2B)"").</li>
+	</ul>
+	<p>
+		You can interract with countries in the Preview. If you click on one of them, a menu gives you the possibility to perform some operations.
+	</p>
+</div>
+
+<div class=""help-footer"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+"
+			"{os2editor.help.property.enabled}","
+<div class=""help-header"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+
+<h4>The activation : `enabled`</h4>
+<p>Enable or disable the shipping method.</p>
+<p>The value must be boolean.</p>
+
+<div class=""help-footer"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+"
+			"{os2editor.help.property.code}","
+<div class=""help-header"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+
+<h4>The code : `code`</h4>
+<p>This is the identifier of the shipping method.</p>
+<p>It must be unique. If not unique, it will be changed.</p>
+
+<div class=""help-footer"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+"
+			"{os2editor.help.property.description}","
+<div class=""help-header"">
+	<p>See the property <a href=""#"" onclick=""os2editor.help('property.label');"">label</a>.</p>
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+
+<h4>The description : `description`</h4>
+<p>This will be the description given to the shipping method.</p>
+<p>The usage is the same as the property <a href=""#"" onclick=""os2editor.help('property.label');"">label</a>.</p>
+
+<div class=""help-footer"">
+	<p>See the property <a href=""#"" onclick=""os2editor.help('property.label');"">label</a>.</p>
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+"
+			"{os2editor.help.property.origin}","
+<div class=""help-header"">
+	<p>See the property <a href=""#"" onclick=""os2editor.help('property.destination');"">destination</a>.</p>
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+
+<h4>The origin : `origin`</h4>
+<p>
+	Same than destination but to filter shipping origin.<br/>
+	The syntax is the same as for <a href=""#"" onclick=""os2editor.help('property.destination');"">destination</a> filtering.
+</p>
+
+<div class=""help-footer"">
+	<p>See the property <a href=""#"" onclick=""os2editor.help('property.destination');"">destination</a>.</p>
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+"
+			"{os2editor.help.property.customer_groups}","
+<div class=""help-header"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+
+<h4>Customer groups : `customer_groups`</h4>
+<p>
+	You can use the name or the ID of customer groups.
+</p>
+
+<div class=""code""><span class=""comment""># Groups NOT LOGGED IN and General</span><br/>
+customer_groups: <span class=""string"">""NOT LOGGED IN,General""</span>,<br/>
+
+<br/>
+<span class=""comment""># Groups NOT LOGGED IN and General by ID</span><br/>
+customer_groups: <span class=""string"">""0,1""</span>,<br/>
+<br/>
+<span class=""comment""># Group Retailer</span><br/>
+customer_groups: <span class=""string"">""Retailer""</span>,</div>
+
+<div class=""help-footer"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+"
+			"{os2editor.help.property.tracking_url}","
+<div class=""help-header"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+
+<h4>Tracking URL : `tracking_url`</h4>
+<p>
+	Documentation is coming.
+</p>
+
+<div class=""help-footer"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+"
+			"{os2editor.help.property.*comment}","
+<div class=""help-header"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+
+<h4>Comments</h4>
+<p>
+	You can add a comment on the shipping method. It will not be shown anywhere but you can put annotations.
+</p>
+
+<div class=""help-footer"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+"
+			"{os2editor.help.changelog}","
+<div class=""help-header"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+
+<h4>Changelog (in french)</h4>
+<div class=""code""><pre>
+{changelog}
+</pre></div>
+
+<div class=""help-footer"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Summary</a></p>
+</div>
+"
