@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_GoogleCheckout
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -351,6 +351,16 @@ class Mage_GoogleCheckout_Model_Api_Xml_Callback extends Mage_GoogleCheckout_Mod
         /* @var $quote Mage_Sales_Model_Quote */
         $quote = $this->_loadQuote();
         $quote->setIsActive(true)->reserveOrderId();
+
+        Mage::dispatchEvent('googlecheckout_create_order_before', array('quote' => $quote));
+        if ($quote->getErrorMessage()) {
+            $this->getGRequest()->SendCancelOrder($this->getGoogleOrderNumber(),
+                $this->__('Order creation error'),
+                $quote->getErrorMessage()
+            );
+            return;
+        }
+
         $storeId = $quote->getStoreId();
 
         Mage::app()->setCurrentStore(Mage::app()->getStore($storeId));
@@ -436,11 +446,18 @@ class Mage_GoogleCheckout_Model_Api_Xml_Callback extends Mage_GoogleCheckout_Mod
         $order->place();
         $order->save();
         $order->sendNewOrderEmail();
+        Mage::dispatchEvent('googlecheckout_save_order_after', array('order' => $order));
 
         $quote->setIsActive(false)->save();
 
         if ($emailAllowed) {
-            Mage::getModel('newsletter/subscriber')->subscribe($order->getCustomerEmail());
+            $customer = $quote->getCustomer();
+            if ($customer && $customer->getId()) {
+                $customer->setIsSubscribed(true);
+                Mage::getModel('newsletter/subscriber')->subscribeCustomer($customer);
+            } else {
+                Mage::getModel('newsletter/subscriber')->subscribe($order->getCustomerEmail());
+            }
         }
 
         Mage::dispatchEvent('checkout_submit_all_after', array('order' => $order, 'quote' => $quote));
@@ -662,10 +679,7 @@ class Mage_GoogleCheckout_Model_Api_Xml_Callback extends Mage_GoogleCheckout_Mod
         if (null !== ($shipping = $this->getData($prefix . 'carrier-calculated-shipping-adjustment'))) {
             $method = 'googlecheckout_carrier';
         } else if (null !== ($shipping = $this->getData($prefix . 'merchant-calculated-shipping-adjustment'))) {
-            $method = $this->_getShippingMethodByName($shipping['shipping-name']['VALUE']);
-            if ($method === false) {
-                $method = 'googlecheckout_merchant';
-            }
+            $method = 'googlecheckout_merchant';
         } else if (null !== ($shipping = $this->getData($prefix . 'flat-rate-shipping-adjustment'))) {
             $method = 'googlecheckout_flatrate';
         } else if (null !== ($shipping = $this->getData($prefix . 'pickup-shipping-adjustment'))) {
@@ -675,6 +689,7 @@ class Mage_GoogleCheckout_Model_Api_Xml_Callback extends Mage_GoogleCheckout_Mod
         if ($method) {
             Mage::getSingleton('tax/config')->setShippingPriceIncludeTax(false);
             $rate = $this->_createShippingRate($method)
+                ->setMethodTitle($shipping['shipping-name']['VALUE'])
                 ->setPrice($shipping['shipping-cost']['VALUE']);
             $qAddress->addShippingRate($rate)
                 ->setShippingMethod($method)
@@ -774,8 +789,11 @@ class Mage_GoogleCheckout_Model_Api_Xml_Callback extends Mage_GoogleCheckout_Mod
         $order->addStatusToHistory($order->getStatus(), $msg);
 
         $order->setPaymentAuthorizationAmount($payment->getAmountAuthorized());
+        $timestamp = Mage::getModel('core/date')->gmtTimestamp(
+            $this->getData('root/authorization-expiration-date/VALUE')
+        );
         $order->setPaymentAuthorizationExpiration(
-            Mage::getModel('core/date')->gmtTimestamp($this->getData('root/authorization-expiration-date/VALUE'))
+            $timestamp ? $timestamp : Mage::getModel('core/date')->gmtTimestamp()
         );
 
         $order->save();

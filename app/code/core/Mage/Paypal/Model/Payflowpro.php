@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Paypal
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -60,11 +60,13 @@ class Mage_Paypal_Model_Payflowpro extends  Mage_Payment_Model_Method_Cc
      * Response codes
      */
     const RESPONSE_CODE_APPROVED                = 0;
+    const RESPONSE_CODE_INVALID_AMOUNT          = 4;
     const RESPONSE_CODE_FRAUDSERVICE_FILTER     = 126;
     const RESPONSE_CODE_DECLINED                = 12;
     const RESPONSE_CODE_DECLINED_BY_FILTER      = 125;
     const RESPONSE_CODE_DECLINED_BY_MERCHANT    = 128;
     const RESPONSE_CODE_CAPTURE_ERROR           = 111;
+    const RESPONSE_CODE_VOID_ERROR              = 108;
 
     /**
      * Payment method code
@@ -154,6 +156,7 @@ class Mage_Paypal_Model_Payflowpro extends  Mage_Payment_Model_Method_Cc
     {
         $request = $this->_buildPlaceRequest($payment, $amount);
         $request->setTrxtype(self::TRXTYPE_AUTH_ONLY);
+        $this->_setReferenceTransaction($payment, $request);
         $response = $this->_postRequest($request);
         $this->_processErrors($response);
 
@@ -178,7 +181,11 @@ class Mage_Paypal_Model_Payflowpro extends  Mage_Payment_Model_Method_Cc
      */
     public function capture(Varien_Object $payment, $amount)
     {
-        if ($payment->getParentTransactionId()) {
+        if ($payment->getReferenceTransactionId()) {
+            $request = $this->_buildPlaceRequest($payment, $amount);
+            $request->setTrxtype(self::TRXTYPE_SALE);
+            $request->setOrigid($payment->getReferenceTransactionId());
+        } elseif ($payment->getParentTransactionId()) {
             $request = $this->_buildBasicRequest($payment);
             $request->setTrxtype(self::TRXTYPE_DELAYED_CAPTURE);
             $request->setOrigid($payment->getParentTransactionId());
@@ -397,7 +404,6 @@ class Mage_Paypal_Model_Payflowpro extends  Mage_Payment_Model_Method_Cc
     {
         $request = $this->_buildBasicRequest($payment);
         $request->setAmt(round($amount,2));
-        $request->setCurrency($payment->getOrder()->getBaseCurrencyCode());
         $request->setAcct($payment->getCcNumber());
         $request->setExpdate(sprintf('%02d',$payment->getCcExpMonth()) . substr($payment->getCcExpYear(),-2,2));
         $request->setCvv2($payment->getCcCid());
@@ -410,6 +416,12 @@ class Mage_Paypal_Model_Payflowpro extends  Mage_Payment_Model_Method_Cc
 
         $order = $payment->getOrder();
         if(!empty($order)){
+            $request->setCurrency($order->getBaseCurrencyCode());
+
+            $orderIncrementId = $order->getIncrementId();
+            $request->setCustref($orderIncrementId)
+                ->setComment1($orderIncrementId);
+
             $billing = $order->getBillingAddress();
             if (!empty($billing)) {
                 $request->setFirstname($billing->getFirstname())
@@ -473,7 +485,9 @@ class Mage_Paypal_Model_Payflowpro extends  Mage_Payment_Model_Method_Cc
       */
     protected function _processErrors(Varien_Object $response)
     {
-        if ($response->getResultCode() != self::RESPONSE_CODE_APPROVED
+        if ($response->getResultCode() == self::RESPONSE_CODE_VOID_ERROR) {
+            throw new Mage_Paypal_Exception(Mage::helper('paypal')->__('You cannot void a verification transaction'));
+        } elseif ($response->getResultCode() != self::RESPONSE_CODE_APPROVED
             && $response->getResultCode() != self::RESPONSE_CODE_FRAUDSERVICE_FILTER) {
             Mage::throwException($response->getRespmsg());
         }
@@ -491,5 +505,17 @@ class Mage_Paypal_Model_Payflowpro extends  Mage_Payment_Model_Method_Cc
             $address->setCountry('US');
             $address->setRegionCode('PR');
         }
+    }
+
+    /**
+     * Set reference transaction data into request
+     *
+     * @param Varien_Object $payment
+     * @param Varien_Object $request
+     * @return Mage_Paypal_Model_Payflowpro
+     */
+    protected function _setReferenceTransaction(Varien_Object $payment, $request)
+    {
+        return $this;
     }
 }

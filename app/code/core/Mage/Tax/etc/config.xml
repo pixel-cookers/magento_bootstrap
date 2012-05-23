@@ -21,14 +21,14 @@
  *
  * @category    Mage
  * @package     Mage_Tax
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 -->
 <config>
     <modules>
         <Mage_Tax>
-            <version>1.6.0.0</version>
+            <version>1.6.0.3</version>
         </Mage_Tax>
     </modules>
     <global>
@@ -65,6 +65,9 @@
                     <sales_order_tax>
                         <table>sales_order_tax</table>
                     </sales_order_tax>
+                    <sales_order_tax_item>
+                        <table>sales_order_tax_item</table>
+                    </sales_order_tax_item>
                 </entities>
             </tax_resource>
         </models>
@@ -129,14 +132,14 @@
                     </tax>
                 </observers>
             </sales_order_save_after>
-            <catalogindex_prepare_price_select>
+            <catalog_prepare_price_select>
                 <observers>
                     <tax>
                         <class>tax/observer</class>
                         <method>prepareCatalogIndexPriceSelect</method>
                     </tax>
                 </observers>
-            </catalogindex_prepare_price_select>
+            </catalog_prepare_price_select>
             <catalog_product_collection_load_after>
                 <observers>
                     <tax>

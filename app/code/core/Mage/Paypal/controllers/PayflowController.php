@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Paypal
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -41,7 +41,7 @@ class Mage_Paypal_PayflowController extends Mage_Core_Controller_Front_Action
         $gotoSection = $this->_cancelPayment();
         $redirectBlock = $this->_getIframeBlock()
             ->setGotoSection($gotoSection)
-            ->setTemplate('paypal/hss/redirect.phtml');
+            ->setTemplate('paypal/payflowlink/redirect.phtml');
         $this->getResponse()->setBody($redirectBlock->toHtml());
     }
 
@@ -51,7 +51,7 @@ class Mage_Paypal_PayflowController extends Mage_Core_Controller_Front_Action
     public function returnUrlAction()
     {
         $redirectBlock = $this->_getIframeBlock()
-            ->setTemplate('paypal/hss/redirect.phtml');
+            ->setTemplate('paypal/payflowlink/redirect.phtml');
 
         $session = $this->_getCheckout();
         if ($session->getLastRealOrderId()) {
@@ -74,6 +74,32 @@ class Mage_Paypal_PayflowController extends Mage_Core_Controller_Front_Action
         }
 
         $this->getResponse()->setBody($redirectBlock->toHtml());
+    }
+
+    /**
+     * Submit transaction to Payflow getaway into iframe
+     */
+    public function formAction()
+    {
+        $this->getResponse()
+            ->setBody($this->_getIframeBlock()->toHtml());
+    }
+
+    /**
+     * Get response from PayPal by silent post method
+     */
+    public function silentPostAction()
+    {
+        $data = $this->getRequest()->getPost();
+        if (isset($data['INVNUM'])) {
+            /** @var $paymentModel Mage_Paypal_Model_Payflowlink */
+            $paymentModel = Mage::getModel('paypal/payflowlink');
+            try {
+                $paymentModel->process($data);
+            } catch (Exception $e) {
+                Mage::logException($e);
+            }
+        }
     }
 
     /**
@@ -110,31 +136,6 @@ class Mage_Paypal_PayflowController extends Mage_Core_Controller_Front_Action
         }
 
         return $gotoSection;
-    }
-
-    /**
-     * Submit transaction to Payflow getaway into iframe
-     */
-    public function formAction()
-    {
-        $this->getResponse()
-            ->setBody($this->_getIframeBlock()->toHtml());
-    }
-
-    /**
-     * Get response from PayPal by silent post method
-     */
-    public function silentPostAction()
-    {
-        $data = $this->getRequest()->getPost();
-        if (isset($data['INVNUM'])) {
-            $paymentModel = Mage::getModel('paypal/payflowlink');
-            try {
-                $paymentModel->process($data);
-            } catch (Exception $e) {
-                Mage::logException($e);
-            }
-        }
     }
 
     /**

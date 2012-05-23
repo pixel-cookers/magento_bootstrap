@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Adminhtml
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -141,13 +141,14 @@ abstract class Mage_Adminhtml_Block_Sales_Order_Create_Form_Abstract
         $renderers = $this->_getAdditionalFormElementRenderers();
 
         foreach ($attributes as $attribute) {
-            /* @var $attribute Mage_Customer_Model_Attribute */
+            /** @var $attribute Mage_Customer_Model_Attribute */
+            $attribute->setStoreId(Mage::getSingleton('adminhtml/session_quote')->getStoreId());
             $inputType = $attribute->getFrontend()->getInputType();
 
             if ($inputType) {
                 $element = $form->addField($attribute->getAttributeCode(), $inputType, array(
                     'name'      => $attribute->getAttributeCode(),
-                    'label'     => $attribute->getStoreLabel(),
+                    'label'     => $this->__($attribute->getStoreLabel()),
                     'class'     => $attribute->getFrontend()->getClass(),
                     'required'  => $attribute->getIsRequired(),
                 ));

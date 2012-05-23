@@ -409,6 +409,10 @@
 	margin: 0 0 15px 20px;
 	list-style: disc;
 }
+#os2-editor .os2editor-page ul ul {
+	margin: 0 0 3px 20px;
+	list-style: circle;
+}
 
 #os2-editor .os2editor-page h4 {
 	padding: 0 0 2px 0;
@@ -452,6 +456,7 @@
 }
 #os2-editor .table-of-contents ul ul {
 	margin: 3px 0 5px 15px;
+	list-style: none;
 }
 #os2-editor .table-of-contents li {
 	padding: 2px 0;

@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Catalog
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -121,6 +121,11 @@ abstract class Mage_Catalog_Model_Product_Type_Abstract
      * Lite validation - only received options are validated
      */
     const PROCESS_MODE_LITE = 'lite';
+
+    /**
+     * Item options prefix
+     */
+    const OPTION_PREFIX = 'option_';
 
     /**
      * Specify type instance product
@@ -357,7 +362,7 @@ abstract class Mage_Catalog_Model_Product_Type_Abstract
             $optionIds = array_keys($options);
             $product->addCustomOption('option_ids', implode(',', $optionIds));
             foreach ($options as $optionId => $optionValue) {
-                $product->addCustomOption('option_'.$optionId, $optionValue);
+                $product->addCustomOption(self::OPTION_PREFIX . $optionId, $optionValue);
             }
         }
 
@@ -569,7 +574,8 @@ abstract class Mage_Catalog_Model_Product_Type_Abstract
         if (!$this->getProduct($product)->getSkipCheckRequiredOption()) {
             foreach ($this->getProduct($product)->getOptions() as $option) {
                 if ($option->getIsRequire()) {
-                    $customOption = $this->getProduct($product)->getCustomOption('option_' . $option->getId());
+                    $customOption = $this->getProduct($product)
+                        ->getCustomOption(self::OPTION_PREFIX . $option->getId());
                     if (!$customOption || strlen($customOption->getValue()) == 0) {
                         $this->getProduct($product)->setSkipCheckRequiredOption(true);
                         Mage::throwException(
@@ -601,7 +607,8 @@ abstract class Mage_Catalog_Model_Product_Type_Abstract
             foreach (explode(',', $optionIds->getValue()) as $optionId) {
                 if ($option = $this->getProduct($product)->getOptionById($optionId)) {
 
-                    $confItemOption = $this->getProduct($product)->getCustomOption('option_'.$option->getId());
+                    $confItemOption = $this->getProduct($product)
+                        ->getCustomOption(self::OPTION_PREFIX . $option->getId());
 
                     $group = $option->groupFactory($option->getType())
                         ->setOption($option)
@@ -740,7 +747,7 @@ abstract class Mage_Catalog_Model_Product_Type_Abstract
             foreach (explode(',', $optionIds->getValue()) as $optionId) {
                 if ($option = $this->getProduct($product)->getOptionById($optionId)) {
 
-                    $confItemOption = $this->getProduct($product)->getCustomOption('option_'.$optionId);
+                    $confItemOption = $this->getProduct($product)->getCustomOption(self::OPTION_PREFIX . $optionId);
 
                     $group = $option->groupFactory($option->getType())
                         ->setOption($option)->setListener(new Varien_Object());

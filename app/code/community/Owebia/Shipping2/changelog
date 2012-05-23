@@ -1,3 +1,44 @@
+[2.4.7 - 20 mars 2012]
+Correction du code PHP pour supprimer des erreurs E_STRICT
+
+[2.4.6 - 19 janvier 2012]
+Correction d'un bug dans l'utilisation de la fonction {table ... in ...} : lorsque la variable de référence est indéfinie, le résultat était invalide (valeur précédente de la variable $replacement)
+Correction d'un problème avec les produits packagés (bundle product) : les produits 'bundle' et les produits 'simple' étaient tous deux récupérés ce qui faussait les résultats
+Support des sets d'attributs
+	product.attribute_set dans les conditions de boucle foreach
+	{product.attribute_set} et {product.attribute_set.id} comme variables dans les boucles foreach
+	product.attribute_set, product.attribute_set.id dans les conditions des opérations sum, count, min et max
+Optimisation du chargement de certaines valeurs (catégories, attribute set, ...)
+Correction d'un problème avec les castings successifs (string), (float) qui posent problème lorsque la locale utilise la virgule comme séparateur de décimales
+
+[2.4.5 - 12 janvier 2012]
+Ajout de la fonction switch
+Ajout d'une syntaxe pour auto-échapper les chaînes de caractères (ex: {{cart.coupon}} donnera null ou 'test' en fonction de la valeur de la variable)
+Dans le cas d'un produit configurable avec option personnalisable, on récupère les options du produit parent et pas celles du produit enfant
+Mise à jour de la documentation
+
+[2.4.4 - 30 novembre 2011]
+Correction d'un bug avec l'utilisation de product.category.id
+Ajout des valeurs memory_limit et memory_usage dans le debug
+
+[2.4.3 - 11 octobre 2011]
+Support de la variable {cart.coupon} depuis le backoffice de Magento (merci à mfoillard, CF: http://www.magentocommerce.com/boards/viewthread/262907/)
+Correction d'un bug dans les opérations sum, count, min et max ($properties = array(); écrasait plusieurs fois les valeurs précédentes)
+
+[2.4.2 - 07 octobre 2011]
+Support des nombres décimaux représentés sous la forme 5.3290705182E-15
+Modification de la licence du code source (MIT au lieu de OSL 3.0)
+Mise à jour des mentions de copyright et de licence
+Nettoyage du code source (suppression de lignes de code en commentaire)
+Initialisation des formules sum et count à 0 au lieu de null (pour éviter les erreurs de formule si aucun produit ne correpond)
+Ajout des alias "a" et "attr" pour "attribute", "o" et "opt" pour "option", "p" pour "product", "c" pour "cart", "s" pour "selection"
+Correction de la récupération des variables personnalisées : getValue('text') au lieu de getValue('plain')
+Support des catégories
+	product.categories dans les conditions de boucle foreach
+	{product.category} et {product.category.id} comme variables dans les boucles foreach
+	product.category, product.category.id, product.categories, product.categories.id dans les conditions des opérations sum, count, min et max
+Amélioration du debug
+
 [2.4.1 - 24 août 2011]
 Modification légère du code php pour éviter un plantage avec certaines versions d'eAccelerator (cache php)
 		$row = null;

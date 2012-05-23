@@ -19,7 +19,7 @@
  *
  * @category    Mage
  * @package     Mage_Adminhtml
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 
@@ -66,10 +66,6 @@ var giftMessagesController = {
             $(container).down('.action-link').addClassName('open');
             $(container).down('.default-text').hide();
             $(container).down('.close-text').show();
-            this.toogleRequired(this.getFieldId(container, 'message'), [
-                this.getFieldId(container, 'sender'),
-                this.getFieldId(container, 'recipient')
-            ]);
         } else {
             $(container).toogleGiftMessage = false;
             $(this.getFieldId(container, 'message')).formObj = $(this.getFieldId(container, 'form'));
@@ -106,11 +102,6 @@ var giftMessagesController = {
         return false;
     },
     saveGiftMessage: function(container) {
-        this.toogleRequired(this.getFieldId(container, 'message'), [
-            this.getFieldId(container, 'sender'),
-            this.getFieldId(container, 'recipient')
-        ]);
-
         $(this.getFieldId(container, 'message')).formObj = $(this.getFieldId(container, 'form'));
 
         if(!$(this.getFieldId(container, 'form')).validator) {

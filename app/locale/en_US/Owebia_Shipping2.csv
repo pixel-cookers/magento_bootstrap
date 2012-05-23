@@ -99,8 +99,9 @@
 			"Owebia Shipping 2 extension help","Owebia Shipping 2 extension help"
 			"{os2editor.help.summary}","
 <h4>Summary</h4>
-<p>
-	The english version of the documentation is not up to date. If you can read french, please use the french version.
+<p style=""color:red;font-weight:bold;"">
+	The english version of the documentation is not up to date. If you can read french, please use the french version.<br/>
+	I have not enough time to translate the documentation in english. If somebody wants to translate the documentation in english or in an other language, please contact owebia.
 </p>
 <div class=""table-of-contents"">
 <ul>

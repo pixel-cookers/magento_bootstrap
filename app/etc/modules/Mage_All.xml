@@ -21,7 +21,7 @@
  *
  * @category    Mage
  * @package     Mage_Core
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 -->
@@ -101,6 +101,7 @@
             <depends>
                 <Mage_Eav/>
                 <Mage_Dataflow/>
+                <Mage_Directory/>
             </depends>
         </Mage_Customer>
         <Mage_Catalog>
@@ -389,20 +390,6 @@
                 <Mage_Customer/>
             </depends>
         </Mage_ProductAlert>
-        <Mage_GoogleOptimizer>
-            <active>true</active>
-            <codePool>core</codePool>
-            <depends>
-                <Mage_Catalog/>
-            </depends>
-        </Mage_GoogleOptimizer>
-        <Mage_GoogleBase>
-            <active>true</active>
-            <codePool>core</codePool>
-            <depends>
-                <Mage_Catalog/>
-            </depends>
-        </Mage_GoogleBase>
         <Mage_Index>
             <active>true</active>
             <codePool>core</codePool>

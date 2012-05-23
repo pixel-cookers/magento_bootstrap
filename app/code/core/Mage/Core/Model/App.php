@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Core
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -39,6 +39,11 @@ class Mage_Core_Model_App
     const XML_PATH_INSTALL_DATE = 'global/install/date';
 
     const XML_PATH_SKIP_PROCESS_MODULES_UPDATES = 'global/skip_process_modules_updates';
+
+    /**
+     * if this node set to true, we will ignore Developer Mode for applying updates
+     */
+    const XML_PATH_IGNORE_DEV_MODE = 'global/skip_process_modules_updates_ignore_dev_mode';
 
     const DEFAULT_ERROR_HANDLER = 'mageCoreErrorHandler';
 
@@ -286,7 +291,8 @@ class Mage_Core_Model_App
         $this->_config->setOptions($options);
 
         $this->_initBaseConfig();
-        $this->_initCache();
+        $cacheInitOptions = is_array($options) && array_key_exists('cache', $options) ? $options['cache'] : array();
+        $this->_initCache($cacheInitOptions);
 
         return $this;
     }
@@ -329,6 +335,7 @@ class Mage_Core_Model_App
     {
         $options = isset($params['options']) ? $params['options'] : array();
         $this->baseInit($options);
+        Mage::register('application_params', $params);
 
         if ($this->_cache->processRequest()) {
             $this->getResponse()->sendResponse();
@@ -378,9 +385,10 @@ class Mage_Core_Model_App
     /**
      * Initialize application cache instance
      *
+     * @param array $cacheInitOptions
      * @return Mage_Core_Model_App
      */
-    protected function _initCache()
+    protected function _initCache(array $cacheInitOptions = array())
     {
         $this->_isCacheLocked = true;
         $options = $this->_config->getNode('global/cache');
@@ -389,6 +397,7 @@ class Mage_Core_Model_App
         } else {
             $options = array();
         }
+        $options = array_merge($options, $cacheInitOptions);
         $this->_cache = Mage::getModel('core/cache', $options);
         $this->_isCacheLocked = false;
         return $this;
@@ -425,7 +434,8 @@ class Mage_Core_Model_App
             return false;
         }
 
-        if (Mage::getIsDeveloperMode()) {
+        $ignoreDevelopmentMode = (bool)(string)$this->_config->getNode(self::XML_PATH_IGNORE_DEV_MODE);
+        if (Mage::getIsDeveloperMode() && !$ignoreDevelopmentMode) {
             return false;
         }
 
@@ -795,9 +805,11 @@ class Mage_Core_Model_App
     /**
      * Retrieve application store object
      *
+     * @param null|string|bool|int|Mage_Core_Model_Store $id
      * @return Mage_Core_Model_Store
+     * @throws Mage_Core_Model_Store_Exception
      */
-    public function getStore($id=null)
+    public function getStore($id = null)
     {
         if (!Mage::isInstalled() || $this->getUpdateMode()) {
             return $this->_getDefaultStore();
@@ -807,13 +819,13 @@ class Mage_Core_Model_App
             return $this->_store;
         }
 
-        if (is_null($id) || ''===$id || $id === true) {
+        if (!isset($id) || ''===$id || $id === true) {
             $id = $this->_currentStore;
         }
         if ($id instanceof Mage_Core_Model_Store) {
             return $id;
         }
-        if (is_null($id)) {
+        if (!isset($id)) {
             $this->throwStoreException();
         }
 
@@ -1210,6 +1222,18 @@ class Mage_Core_Model_App
     }
 
     /**
+     * Request setter
+     *
+     * @param Mage_Core_Controller_Request_Http $request
+     * @return Mage_Core_Model_App
+     */
+    public function setRequest(Mage_Core_Controller_Request_Http $request)
+    {
+        $this->_request = $request;
+        return $this;
+    }
+
+    /**
      * Retrieve response object
      *
      * @return Zend_Controller_Response_Http
@@ -1222,6 +1246,18 @@ class Mage_Core_Model_App
             $this->_response->setHeader("Content-Type", "text/html; charset=UTF-8");
         }
         return $this->_response;
+    }
+
+    /**
+     * Response setter
+     *
+     * @param Mage_Core_Controller_Response_Http $response
+     * @return Mage_Core_Model_App
+     */
+    public function setResponse(Mage_Core_Controller_Response_Http $response)
+    {
+        $this->_response = $response;
+        return $this;
     }
 
     public function addEventArea($area)
@@ -1267,7 +1303,8 @@ class Mage_Core_Model_App
                 switch ($obs['type']) {
                     case 'disabled':
                         break;
-                    case 'object': case 'model':
+                    case 'object':
+                    case 'model':
                         $method = $obs['method'];
                         $observer->addData($args);
                         $object = Mage::getModel($obs['model']);
@@ -1287,11 +1324,13 @@ class Mage_Core_Model_App
     }
 
     /**
-     * Added not existin observers methods calls protection
+     * Performs non-existent observer method calls protection
      *
      * @param object $object
      * @param string $method
      * @param Varien_Event_Observer $observer
+     * @return Mage_Core_Model_App
+     * @throws Mage_Core_Exception
      */
     protected function _callObserverMethod($object, $method, $observer)
     {

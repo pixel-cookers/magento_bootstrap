@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Core
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -73,13 +73,17 @@ class Mage_Core_Model_Resource_Email_Template extends Mage_Core_Model_Resource_D
         if ($template->getTemplateActual() != 0 || is_null($template->getTemplateActual())) {
             $select = $this->_getReadAdapter()->select()
                 ->from($this->getMainTable(), 'COUNT(*)')
-                ->where('template_id != :template_id')
                 ->where('template_code = :template_code');
-
             $bind = array(
-                'template_id'   => $template->getId(),
                 'template_code' => $template->getTemplateCode()
             );
+
+            $templateId = $template->getId();
+            if ($templateId) {
+                $select->where('template_id != :template_id');
+                $bind['template_id'] = $templateId;
+            }
+
             $result = $this->_getReadAdapter()->fetchOne($select, $bind);
             if ($result) {
                 return true;

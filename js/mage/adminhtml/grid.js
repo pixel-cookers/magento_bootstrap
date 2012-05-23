@@ -19,7 +19,7 @@
  *
  * @category    Mage
  * @package     Mage_Adminhtml
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 var varienGrid = new Class.create();
@@ -175,6 +175,8 @@ varienGrid.prototype = {
                 onComplete: this.initGridAjax.bind(this),
                 onSuccess: function(transport) {
                     try {
+                        var responseText = transport.responseText.replace(/>\s+</g, '><');
+
                         if (transport.responseText.isJSON()) {
                             var response = transport.responseText.evalJSON()
                             if (response.error) {
@@ -193,17 +195,17 @@ varienGrid.prototype = {
                              */
                             var divId = $(this.containerId);
                             if (divId.id == this.containerId) {
-                                divId.update(transport.responseText);
+                                divId.update(responseText);
                             } else {
-                                $$('div[id="'+this.containerId+'"]')[0].update(transport.responseText);
+                                $$('div[id="'+this.containerId+'"]')[0].update(responseText);
                             }
                         }
                     } catch (e) {
                         var divId = $(this.containerId);
                         if (divId.id == this.containerId) {
-                            divId.update(transport.responseText);
+                            divId.update(responseText);
                         } else {
-                            $$('div[id="'+this.containerId+'"]')[0].update(transport.responseText);
+                            $$('div[id="'+this.containerId+'"]')[0].update(responseText);
                         }
                     }
                 }.bind(this)
@@ -238,20 +240,27 @@ varienGrid.prototype = {
     _processFailure : function(transport){
         location.href = BASE_URL;
     },
-    addVarToUrl : function(varName, varValue){
+    _addVarToUrl : function(url, varName, varValue){
         var re = new RegExp('\/('+varName+'\/.*?\/)');
-        var parts = this.url.split(new RegExp('\\?'));
-        this.url = parts[0].replace(re, '/');
-        this.url+= varName+'/'+varValue+'/';
+        var parts = url.split(new RegExp('\\?'));
+        url = parts[0].replace(re, '/');
+        url+= varName+'/'+varValue+'/';
         if(parts.size()>1) {
-            this.url+= '?' + parts[1];
+            url+= '?' + parts[1];
         }
-        //this.url = this.url.replace(/([^:])\/{2,}/g, '$1/');
+        return url;
+    },
+    addVarToUrl : function(varName, varValue){
+        this.url = this._addVarToUrl(this.url, varName, varValue);
         return this.url;
     },
     doExport : function(){
         if($(this.containerId+'_export')){
-            location.href = $(this.containerId+'_export').value;
+            var exportUrl = $(this.containerId+'_export').value;
+            if(this.massaction && this.massaction.checkedString) {
+                exportUrl = this._addVarToUrl(exportUrl, this.massaction.formFieldNameInternal, this.massaction.checkedString);
+            }
+            location.href = exportUrl;
         }
     },
     bindFilterFields : function(){
@@ -341,6 +350,7 @@ varienGridMassaction.prototype = {
     gridIds: [],
     useSelectAll: false,
     currentItem: false,
+    lastChecked: { left: false, top: false, checkbox: false },
     fieldTemplate: new Template('<input type="hidden" name="#{name}" value="#{value}" />'),
     initialize: function (containerId, grid, checkedValues, formFieldNameInternal, formFieldName) {
         this.setOldCallback('row_click', grid.rowClickCallback);
@@ -350,6 +360,7 @@ varienGridMassaction.prototype = {
 
         this.useAjax        = false;
         this.grid           = grid;
+        this.grid.massaction = this;
         this.containerId    = containerId;
         this.initMassactionElements();
 
@@ -379,6 +390,8 @@ varienGridMassaction.prototype = {
         this.form           = this.prepareForm();
         this.validator      = new Validation(this.form);
         this.select.observe('change', this.onSelectChange.bindAsEventListener(this));
+        this.lastChecked    = { left: false, top: false, checkbox: false };
+        this.initMassSelect();
     },
     prepareForm: function() {
         var form = $(this.containerId + '-form'), formPlace = null,
@@ -511,18 +524,21 @@ varienGridMassaction.prototype = {
         this.setCheckedValues((this.useSelectAll ? this.getGridIds() : this.getCheckboxesValuesAsString()));
         this.checkCheckboxes();
         this.updateCount();
+        this.clearLastChecked();
         return false;
     },
     unselectAll: function() {
         this.setCheckedValues('');
         this.checkCheckboxes();
         this.updateCount();
+        this.clearLastChecked();
         return false;
     },
     selectVisible: function() {
         this.setCheckedValues(this.getCheckboxesValuesAsString());
         this.checkCheckboxes();
         this.updateCount();
+        this.clearLastChecked();
         return false;
     },
     unselectVisible: function() {
@@ -531,6 +547,7 @@ varienGridMassaction.prototype = {
         }.bind(this));
         this.checkCheckboxes();
         this.updateCount();
+        this.clearLastChecked();
         return false;
     },
     setCheckedValues: function(values) {
@@ -630,6 +647,64 @@ varienGridMassaction.prototype = {
     },
     getListener: function(strValue) {
         return eval(strValue);
+    },
+    initMassSelect: function() {
+        $$('input[class~="massaction-checkbox"]').each(
+            function(element) {
+                element.observe('click', this.massSelect.bind(this));
+            }.bind(this)
+            );
+    },
+    clearLastChecked: function() {
+        this.lastChecked = {
+            left: false,
+            top: false,
+            checkbox: false
+        };
+    },
+    massSelect: function(evt) {
+        if(this.lastChecked.left !== false && this.lastChecked.top !== false) {
+            // Left mouse button and "Shift" key was pressed together
+            if(evt.button === 0 && evt.shiftKey === true) {
+                var clickedOffset = Event.element(evt).viewportOffset();
+
+                this.grid.rows.each(
+                    function(row) {
+                        var element = row.select('.massaction-checkbox')[0];
+                        var offset = element.viewportOffset();
+
+                        if(
+                            (
+                                // The checkbox is past the most recently clicked checkbox
+                                (offset.top < clickedOffset.top) &&
+                                // The checkbox is not past the "boundary" checkbox
+                                (offset.top > this.lastChecked.top || element == this.lastChecked.checkbox)
+                            )
+                            ||
+                            (
+                                // The checkbox is before the most recently clicked checkbox
+                                (offset.top > clickedOffset.top) &&
+                                // The checkbox is after the "boundary" checkbox
+                                (offset.top < this.lastChecked.top || element == this.lastChecked.checkbox)
+                            )
+                        ) {
+                            // Set the checkbox to the state of the most recently clicked checkbox
+                            element.checked = Event.element(evt).checked;
+
+                            this.setCheckbox(element);
+                        }
+                    }.bind(this)
+                );
+
+                this.updateCount();
+            }
+        }
+
+        this.lastChecked = {
+            left: Event.element(evt).viewportOffset().left,
+            top: Event.element(evt).viewportOffset().top,
+            checkbox: Event.element(evt) // "boundary" checkbox
+        };
     }
 };
 

@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Core
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -332,9 +332,10 @@ class Mage_Core_Model_Resource
      */
     public function cleanDbRow(&$row)
     {
+        $zeroDate = $this->getConnection(self::DEFAULT_READ_RESOURCE)->getSuggestedZeroDate();
         if (!empty($row) && is_array($row)) {
             foreach ($row as $key=>&$value) {
-                if (is_string($value) && $value === '0000-00-00 00:00:00') {
+                if (is_string($value) && $value === $zeroDate) {
                     $value = '';
                 }
             }

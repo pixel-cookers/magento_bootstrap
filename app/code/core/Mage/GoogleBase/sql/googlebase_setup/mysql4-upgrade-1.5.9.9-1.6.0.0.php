@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_GoogleBase
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -33,7 +33,7 @@ $installer->startSetup();
  */
 $installer->getConnection()->dropForeignKey(
     $installer->getTable('googlebase/attributes'),
-    'FK_GOOGLEBASE_ATTRIBUTES_ATTRIBUTE_ID'
+    'GOOGLEBASE_ATTRIBUTES_ATTRIBUTE_ID'
 );
 
 $installer->getConnection()->dropForeignKey(
@@ -43,17 +43,17 @@ $installer->getConnection()->dropForeignKey(
 
 $installer->getConnection()->dropForeignKey(
     $installer->getTable('googlebase/items'),
-    'FK_GOOGLEBASE_ITEMS_PRODUCT_ID'
+    'GOOGLEBASE_ITEMS_PRODUCT_ID'
 );
 
 $installer->getConnection()->dropForeignKey(
     $installer->getTable('googlebase/items'),
-    'FK_GOOGLEBASE_ITEMS_STORE_ID'
+    'GOOGLEBASE_ITEMS_STORE_ID'
 );
 
 $installer->getConnection()->dropForeignKey(
     $installer->getTable('googlebase/types'),
-    'FK_GOOGLEBASE_TYPES_ATTRIBUTE_SET_ID'
+    'GOOGLEBASE_TYPES_ATTRIBUTE_SET_ID'
 );
 
 

@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Paypal
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -55,6 +55,17 @@ class Mage_Paypal_Model_Observer
     }
 
     /**
+     * Clean unfinished transaction
+     *
+     * @deprecated since 1.6.2.0
+     * @return Mage_Paypal_Model_Observer
+     */
+    public function cleanTransactions()
+    {
+        return $this;
+    }
+
+    /**
      * Save order into registry to use it in the overloaded controller.
      *
      * @param Varien_Event_Observer $observer
@@ -64,7 +75,7 @@ class Mage_Paypal_Model_Observer
     {
         /* @var $order Mage_Sales_Model_Order */
         $order = $observer->getEvent()->getData('order');
-        Mage::register('payflowlink_order', $order, true);
+        Mage::register('hss_order', $order, true);
 
         return $this;
     }
@@ -78,7 +89,7 @@ class Mage_Paypal_Model_Observer
     public function setResponseAfterSaveOrder(Varien_Event_Observer $observer)
     {
         /* @var $order Mage_Sales_Model_Order */
-        $order = Mage::registry('payflowlink_order');
+        $order = Mage::registry('hss_order');
 
         if ($order && $order->getId()) {
             $payment = $order->getPayment();
