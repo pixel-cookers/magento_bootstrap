@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Adminhtml
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -33,7 +33,7 @@ class Mage_Adminhtml_Model_System_Config_Backend_Admin_Observer
      */
     public function afterCustomUrlChanged($observer)
     {
-        if (is_null(Mage::registry('custom_admin_url_redirect'))) {
+        if (is_null(Mage::registry('custom_admin_path_redirect'))) {
             return;
         }
 
@@ -42,8 +42,8 @@ class Mage_Adminhtml_Model_System_Config_Backend_Admin_Observer
         $adminSession->unsetAll();
         $adminSession->getCookie()->delete($adminSession->getSessionName());
 
-        $route = ((bool)(string)Mage::getConfig()->getNode(Mage_Adminhtml_Helper_Data::XML_PATH_USE_CUSTOM_ADMIN_URL))
-            ? Mage::getConfig()->getNode(Mage_Adminhtml_Helper_Data::XML_PATH_CUSTOM_ADMIN_URL)
+        $route = ((bool)(string)Mage::getConfig()->getNode(Mage_Adminhtml_Helper_Data::XML_PATH_USE_CUSTOM_ADMIN_PATH))
+            ? Mage::getConfig()->getNode(Mage_Adminhtml_Helper_Data::XML_PATH_CUSTOM_ADMIN_PATH)
             : Mage::getConfig()->getNode(Mage_Adminhtml_Helper_Data::XML_PATH_ADMINHTML_ROUTER_FRONTNAME);
 
         Mage::app()->getResponse()

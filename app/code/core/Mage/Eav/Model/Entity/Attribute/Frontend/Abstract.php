@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Eav
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -32,7 +32,8 @@
  * @package    Mage_Eav
  * @author      Magento Core Team <core@magentocommerce.com>
  */
-abstract class Mage_Eav_Model_Entity_Attribute_Frontend_Abstract implements Mage_Eav_Model_Entity_Attribute_Frontend_Interface
+abstract class Mage_Eav_Model_Entity_Attribute_Frontend_Abstract
+    implements Mage_Eav_Model_Entity_Attribute_Frontend_Interface
 {
 
     /**
@@ -133,17 +134,62 @@ abstract class Mage_Eav_Model_Entity_Attribute_Frontend_Abstract implements Mage
     }
 
     /**
-     * Retreive frontend class
+     * Retrieve frontend class
      *
      * @return string
      */
     public function getClass()
     {
-        $out = $this->getAttribute()->getFrontendClass();
+        $out    = array();
+        $out[]  = $this->getAttribute()->getFrontendClass();
         if ($this->getAttribute()->getIsRequired()) {
-            $out .= ' required-entry';
+            $out[]  = 'required-entry';
+        }
+
+        $inputRuleClass = $this->_getInputValidateClass();
+        if ($inputRuleClass) {
+             $out[] = $inputRuleClass;
+        }
+        if (!empty($out)) {
+            $out = implode(' ', $out);
+        } else {
+            $out = '';
         }
         return $out;
+    }
+
+     /**
+     * Return validate class by attribute input validation rule
+     *
+     * @return string|false
+     */
+    protected function _getInputValidateClass()
+    {
+        $class          = false;
+        $validateRules  = $this->getAttribute()->getValidateRules();
+        if (!empty($validateRules['input_validation'])) {
+            switch ($validateRules['input_validation']) {
+                case 'alphanumeric':
+                    $class = 'validate-alphanum';
+                    break;
+                case 'numeric':
+                    $class = 'validate-digits';
+                    break;
+                case 'alpha':
+                    $class = 'validate-alpha';
+                    break;
+                case 'email':
+                    $class = 'validate-email';
+                    break;
+                case 'url':
+                    $class = 'validate-url';
+                    break;
+                default:
+                    $class = false;
+                    break;
+            }
+        }
+        return $class;
     }
 
     /**

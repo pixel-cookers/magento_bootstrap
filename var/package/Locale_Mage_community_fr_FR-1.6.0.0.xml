@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<package>
+    <name>Locale_Mage_community_fr_FR</name>
+    <version>1.6.0.0</version>
+    <stability>stable</stability>
+    <license uri="http://www.opensource.org/licenses/academic.php">AFL v3.0</license>
+    <channel>community</channel>
+    <extends/>
+    <summary>Magento Community Modules - French (France) Language Pack</summary>
+    <description>Magento Community Modules - French (France) Language Pack&#xD;
+&#xD;
+Ce pack contient les fichiers de traductions fran&#xE7;aise de Magento ainsi que les emails traduits.</description>
+    <notes>v1.6.0.0 :&#xD;
+ - Mise &#xE0; jour pour Magento CE v1.6.0.0&#xD;
+&#xD;
+v1.5.0.2 :&#xD;
+ - Correction 2 coquilles d'apostrophes non &#xE9;chapp&#xE9;es.&#xD;
+&#xD;
+v1.5.0.1 :&#xD;
+ - Mise &#xE0; jour pour Magento CE v1.5.0.1&#xD;
+&#xD;
+v1.4.2.0 :&#xD;
+ - Mise &#xE0; jour pour Magento CE v1.4.2.0&#xD;
+&#xD;
+v1.4.1.1 :&#xD;
+ - Correction du bug BO : produits t&#xE9;l&#xE9;chargeables.&#xD;
+ - Correction du bug BO : Instance de widgets.&#xD;
+&#xD;
+v1.4.1.0 :&#xD;
+ - Mise &#xE0; jour pour Magento CE v1.4.1&#xD;
+&#xD;
+v1.4.0.0 :&#xD;
+ - Mise &#xE0; jour pour Magento CE v1.4&#xD;
+&#xD;
+v1.3.0.4 :&#xD;
+ - Pas de modifications. Extension repackag&#xE9;e suite &#xE0; des pbs sur Magento Connect&#xD;
+&#xD;
+v1.3.0.1 &#xE0; v1.3.0.3 :&#xD;
+ - Ajout de libell&#xE9;s manquants&#xD;
+&#xD;
+v1.3.0 :&#xD;
+ - Mise &#xE0; jour pour Magento v1.3.0&#xD;
+ - Ajout de libell&#xE9;s manquants&#xD;
+&#xD;
+v1.2.0.2 :&#xD;
+ - Correction de l&amp;apos;erreur de manip de la v1.2.0.1.1. Retour &#xE0; la v1.2.0.1.&#xD;
+&#xD;
+v1.2.0.1.1 :&#xD;
+ - Erreur de publication &#xE0; l&amp;apos;aide des outils Varien&#xD;
+&#xD;
+v1.2.0.1 :&#xD;
+ - Ajout de libell&#xE9;s manquants (merci &#xE0; Arnaud)&#xD;
+&#xD;
+v1.2.0 :&#xD;
+ - Ajout des nouveaux libell&#xE9;s de la v1.2.x de Magento (merci &#xE0; Beno&#xEE;t et Kiwii)&#xD;
+&#xD;
+v1.1.7 :&#xD;
+ - Correction d&amp;apos;un libell&#xE9; qui provoque une erreur javascript : &amp;quot;Saisissez une liste d\&amp;apos;adresses email valides, s&#xE9;par&#xE9;es par des virgules. Par exemple, jeandupond@domaine.com, martindupond@domaine.com&amp;quot;&#xD;
+&#xD;
+v1.1.6 :&#xD;
+ - Mise &#xE0; jour pour la v1.1.7&#xD;
+ - Correction du bug des produits bundle et des options personnalisables.&#xD;
+ - Ajout de la traduction de plusieurs termes non traduits auparavant&#xD;
+&#xD;
+v1.1.5 :&#xD;
+ - Suppression d&amp;apos;un fichier inutile.&#xD;
+&#xD;
+v1.1.4 :&#xD;
+ - Mise &#xE0; jour du libell&#xE9; &amp;quot;Quantit&#xE9; d&#xE9;finie par l\&amp;apos;utilisateur&amp;quot; dans Mage_Bundle.csv qui cause un bug javascript.&#xD;
+&#xD;
+v1.1.3 :&#xD;
+ - Attention, les emails contenus dans cette publication ne sont pas compatibles avec la version 1.0 de Magento.&#xD;
+Les fichiers csv de traduction sont compatibles avec la v1.0.</notes>
+    <authors><author><name>SeL</name><user>seblepers</user><email>seb.lepers@gmail.com</email></author></authors>
+    <date>2011-11-29</date>
+    <time>15:22:27</time>
+    <contents><target name="magelocale"><dir name="fr_FR"><file name="Find_Feed.csv" hash="3736946abbe24f9b8395eedc7e9b0aeb"/><file name="Mage_AdminNotification.csv" hash="9af8fc36041c74b358b7ee56ded6834e"/><file name="Mage_Adminhtml.csv" hash="9938dc947e910a65d8f4f7b57df25978"/><file name="Mage_Api.csv" hash="af3b0d4c3c5c18b4da107c4260c12764"/><file name="Mage_Authorizenet.csv" hash="0fa8b5503cea5ec27427723b0bab4328"/><file name="Mage_Backup.csv" hash="27979488cc44c302d4144f5cb2bf9ef4"/><file name="Mage_Bundle.csv" hash="3adbbd746d8c2564625c168e0967b4bd"/><file name="Mage_Catalog.csv" hash="47b26255c5106f260879002830338705"/><file name="Mage_CatalogInventory.csv" hash="5cf938d9349e5d05b1fef16ad8a7bd17"/><file name="Mage_CatalogRule.csv" hash="85d7a73bd811b6eca54836848845c88d"/><file name="Mage_CatalogSearch.csv" hash="c9549b5a99f15aa9822f08d2aeed2737"/><file name="Mage_Centinel.csv" hash="06e6e984eca45c43bb2098679ee50666"/><file name="Mage_Checkout.csv" hash="1c8876ae3e8b50fc0507c611ded80ce9"/><file name="Mage_Chronopay.csv" hash="9e742af13d5b79da8841724b0c5b578c"/><file name="Mage_Cms.csv" hash="54fde9ac7a9096eed285c0bc294338da"/><file name="Mage_Compiler.csv" hash="97b2c6d0a602b8e1364855ecff2f2b6b"/><file name="Mage_Connect.csv" hash="4c393cd453a744a18c8c43de63b97330"/><file name="Mage_Contacts.csv" hash="7f1ce02da2fc8afc404b6e2b7de6cb93"/><file name="Mage_Core.csv" hash="04fbd0a9d7c80d49d934baffffeccd84"/><file name="Mage_Cron.csv" hash="0e158662da33f551cba4de5acd8759b5"/><file name="Mage_Customer.csv" hash="a5540c66172686df54a0f6aafe13e21c"/><file name="Mage_Cybermut.csv" hash="5710e6b581ba7fb82200f70ee2ba2143"/><file name="Mage_Cybersource.csv" hash="6b9cc5c9a9148aa61d31812ad57b8649"/><file name="Mage_Dataflow.csv" hash="55301d07949837589c4570714ee05eae"/><file name="Mage_Directory.csv" hash="53cbce143282c4acd1de85ce362090f7"/><file name="Mage_Downloadable.csv" hash="18f2edd40a1f159e790229fa9669a870"/><file name="Mage_Eav.csv" hash="04468f97e83b0ad6663a917e040c38ba"/><file name="Mage_Eway.csv" hash="527077de7218e886675e96569330dee6"/><file name="Mage_Flo2Cash.csv" hash="609ca1e5bb01c39e6a05e12bb884955b"/><file name="Mage_GiftMessage.csv" hash="efae3615f5576e1e3cbc5bc29fbdc9c0"/><file name="Mage_GoogleAnalytics.csv" hash="3160d134d6df516d7eceb8afb0ff4594"/><file name="Mage_GoogleBase.csv" hash="d3ed941a9250e396f50848e93917622b"/><file name="Mage_GoogleCheckout.csv" hash="3de94af17ca3bfb47615a6608d711cdf"/><file name="Mage_GoogleOptimizer.csv" hash="3810b3429f6dea97dc306f8e52eda1f4"/><file name="Mage_Ideal.csv" hash="f58e8f64d9c8c912c01a77b78a59f1e4"/><file name="Mage_ImportExport.csv" hash="833b343a5e75ad7d8a4a2043288a8ebc"/><file name="Mage_Index.csv" hash="284c7e35862a94cea4b2f9ef05a89107"/><file name="Mage_Install.csv" hash="b6540941fbea89b1508a4a7372fc8a37"/><file name="Mage_Log.csv" hash="a80dbc4dcc347de1e6f850c4b796f71f"/><file name="Mage_Media.csv" hash="89dccdd18c952935905581a830c906c6"/><file name="Mage_Newsletter.csv" hash="d24da342c3f31ff6e750d67950a18198"/><file name="Mage_Ogone.csv" hash="08a0f9cf079d00fe9d712900baa66830"/><file name="Mage_Oscommerce.csv" hash="3de222705d8698582f31a220c7206e50"/><file name="Mage_Page.csv" hash="a07094e78ffeed215a4af1fd021a6e06"/><file name="Mage_PageCache.csv" hash="2ee75fdaa2c007f56d6cc0de7994f155"/><file name="Mage_Paybox.csv" hash="4ad10cf6620dc3c29e21f2cc35e08127"/><file name="Mage_Paygate.csv" hash="aaf6f8e4a6ef2fdc2faa59b6c69cb4f1"/><file name="Mage_Payment.csv" hash="df0342fe852231cea7462269b4f500df"/><file name="Mage_Paypal.csv" hash="573e6e8cc40735368e40a611d15e9179"/><file name="Mage_PaypalUk.csv" hash="ce711b631db326a0385370c960c815ea"/><file name="Mage_Persistent.csv" hash="d9881867c4c187754a0e7b2301d63db2"/><file name="Mage_Poll.csv" hash="db297ba9630a013ee39b2c642e71db13"/><file name="Mage_ProductAlert.csv" hash="e2910137b0b940a029c3d5cce56884d7"/><file name="Mage_Protx.csv" hash="8b1d447278744e5e52b61ee48984501d"/><file name="Mage_Rating.csv" hash="a6e9e7aac66fe5d2c47f699c3ec1ad97"/><file name="Mage_Reports.csv" hash="fb5e6e528207e09b25bfe883fd38238c"/><file name="Mage_Review.csv" hash="03eeadf7bc398bea07de71779583dc38"/><file name="Mage_Rss.csv" hash="521b2fcba6aabedc6a6f5a787b837a0b"/><file name="Mage_Rule.csv" hash="c0b21b705852655184483f3babdc506c"/><file name="Mage_Sales.csv" hash="7930dacbf0384a47a9ce583bc8a17f0a"/><file name="Mage_SalesRule.csv" hash="721fc842678628451e13aa4d848d4cdd"/><file name="Mage_Sendfriend.csv" hash="f298973634146b17bf286a3b0919d696"/><file name="Mage_Shipping.csv" hash="d960228244836e25e9e9ddd041846169"/><file name="Mage_Sitemap.csv" hash="03a615e19179c0a5fdf34ec926003e74"/><file name="Mage_Strikeiron.csv" hash="701f3154775abaa98b2cb8a8eb954f96"/><file name="Mage_Tag.csv" hash="77c5e0d8fd90aa5673988ca29216c03d"/><file name="Mage_Tax.csv" hash="e50bc4eacaa14ff405e0a115c4e4dc11"/><file name="Mage_Usa.csv" hash="2f35878d9ba62fe26e7878942fb9c115"/><file name="Mage_Weee.csv" hash="4b5116deebece8dae01599b4744b4500"/><file name="Mage_Widget.csv" hash="73b3a56f4ff0cf7ff1c3388975520d01"/><file name="Mage_Wishlist.csv" hash="4b69986ab65796d437eab82e5f819aeb"/><file name="Mage_XmlConnect.csv" hash="c26e53555ed23f3188315f99ea641b35"/><file name="Phoenix_Moneybookers.csv" hash="8a72f7e2fd7ff6503fbbf24dcbc0db05"/><dir><dir name="template"><dir name="email"><file name="account_new.html" hash="63091e45e50dc4840bd02f2a9fcd3c94"/><file name="account_new_confirmation.html" hash="8c7c13a994bbeb70aa941d9c5aaa0af9"/><file name="account_new_confirmed.html" hash="91c8892a591b8b14ba13fe028e10ac93"/><file name="admin_password_new.html" hash="d1d99594c84ee0fc042432f6b74e106a"/><file name="contact_form.html" hash="5f8826717cc0c26f8fd5e15cf1c6855b"/><file name="currency_update_warning.html" hash="6a665782c027ab60f1c28d4ea97c9d05"/><file name="log_clean_warning.html" hash="b29e09176d50ec4af3b13151a4078067"/><file name="moneybookers_activateemail.html" hash="b290b0b16fff6cb997640aeef90489f4"/><file name="newsletter_subscr_confirm.html" hash="2b85802b10f7e5e0de14abed41a2f985"/><file name="newsletter_subscr_success.html" hash="5a3b7f87f0ad92d8dc4f0c1c1f9507c7"/><file name="newsletter_unsub_success.html" hash="e9fb4c10ab0e55fac0d14c8fa57d156a"/><file name="password_new.html" hash="58bd4249ed9e4eccf01448b057c64feb"/><file name="payment_failed.html" hash="767e0fdfb55ccfc2037a82eebfa69275"/><file name="product_alert_cron_error.html" hash="4e840e5d218f3eaaa26b4530c42ace2f"/><file name="product_price_alert.html" hash="88f0a2e6c11890114ec33d54ee7805db"/><file name="product_share.html" hash="3ad016f23fa1562cb0961f5a24f663e3"/><file name="product_stock_alert.html" hash="f8b39f750bb97b598e649261ed830607"/><dir name="sales"><file name="creditmemo_new.html" hash="10ad974b77f7938a9d8734fa3b757f8d"/><file name="creditmemo_new_guest.html" hash="d8af63dcbc6c4639435e8a034913b933"/><file name="creditmemo_update.html" hash="32cd92d3de92ebea3493efa6e5db9315"/><file name="creditmemo_update_guest.html" hash="7f971206d668b2808c22decd553562b7"/><file name="invoice_new.html" hash="3f82190e21900bae4b17f42c6ab1b654"/><file name="invoice_new_guest.html" hash="34e5ed185a88360cfb60f71348733b19"/><file name="invoice_update.html" hash="753cbc0aa388fa4c4a09d177a4db6054"/><file name="invoice_update_guest.html" hash="09b6480bfeb918326c83d36281f7f8c0"/><file name="order_new.html" hash="916416bb7c55fa81380d1cd4871cb7a3"/><file name="order_new_guest.html" hash="39f85c39f39db30b846f948f42d1aa09"/><file name="order_update.html" hash="3dc04f2884e06e472d6713755bfba108"/><file name="order_update_guest.html" hash="6a81299cd33ea55e0c25746b451d444c"/><file name="shipment_new.html" hash="b252b755ccc32d8acdf4e551d8604e10"/><file name="shipment_new_guest.html" hash="55d2a150f033457bb7ed5862c447cb3b"/><file name="shipment_update.html" hash="9ab5aa9a810b9784f9f29f463c54bf82"/><file name="shipment_update_guest.html" hash="5dc2cd6fb4af53f1e123052d26096b76"/></dir><file name="sitemap_generate_warning.html" hash="0413180a965995a25954b732129f5f6f"/><file name="wishlist_share.html" hash="e847b745969b7c8925b65267849a9a17"/></dir></dir></dir></dir></target><target name="magedesign"><dir name="adminhtml"><dir name="default"><dir name="default"><dir name="locale"><dir name="fr_FR"><file name="translate.csv" hash="8c5512def1e0b723b90d347cd06c66f7"/></dir></dir></dir></dir></dir><dir name="frontend"><dir name="default"><dir name="default"><dir name="locale"><dir name="fr_FR"><file name="translate.csv" hash="10a4e5ef6d413465508c26d529bc3fb8"/></dir></dir></dir></dir></dir></target></contents>
+    <compatible/>
+    <dependencies><required><php><min>5.2.0</min><max>6.0.0</max></php></required></dependencies>
+</package>

@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Directory
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -46,11 +46,12 @@ class Mage_Directory_Model_Resource_Country_Collection extends Mage_Core_Model_R
     /**
      * Load allowed countries for current store
      *
+     * @param mixed $store
      * @return Mage_Directory_Model_Resource_Country_Collection
      */
-    public function loadByStore()
+    public function loadByStore($store = null)
     {
-        $allowCountries = explode(',', (string)Mage::getStoreConfig('general/country/allow'));
+        $allowCountries = explode(',', (string)Mage::getStoreConfig('general/country/allow', $store));
         if (!empty($allowCountries)) {
             $this->addFieldToFilter("country_id", array('in' => $allowCountries));
         }

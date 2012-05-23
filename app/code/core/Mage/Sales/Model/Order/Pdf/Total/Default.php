@@ -20,10 +20,17 @@
  *
  * @category    Mage
  * @package     Mage_Sales
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
+/**
+ * Sales Order Total PDF model
+ *
+ * @category   Mage
+ * @package    Mage_Sales
+ * @author     Magento Core Team <core@magentocommerce.com>
+ */
 class Mage_Sales_Model_Order_Pdf_Total_Default extends Varien_Object
 {
     /**
@@ -66,32 +73,47 @@ class Mage_Sales_Model_Order_Pdf_Total_Default extends Varien_Object
      */
     public function getFullTaxInfo()
     {
-       $rates     = Mage::getResourceModel('sales/order_tax_collection')->loadByOrder($this->getOrder())->toArray();
-       $fullInfo  = Mage::getSingleton('tax/calculation')->reproduceProcess($rates['items']);
-       $fontSize = $this->getFontSize() ? $this->getFontSize() : 7;
-       $tax_info  = array();
+        $taxClassAmount = Mage::helper('tax')->getCalculatedTaxes($this->getOrder());
+        $fontSize       = $this->getFontSize() ? $this->getFontSize() : 7;
 
-       if ($fullInfo) {
-          foreach ($fullInfo as $info) {
-             if (isset($info['hidden']) && $info['hidden']) {
-                continue;
-             }
+        if (!empty($taxClassAmount)) {
+            $shippingTax    = Mage::helper('tax')->getShippingTax($this->getOrder());
+            $taxClassAmount = array_merge($shippingTax, $taxClassAmount);
 
-             $_amount   = $info['amount'];
+            foreach ($taxClassAmount as &$tax) {
+                $percent          = $tax['percent'] ? ' (' . $tax['percent']. '%)' : '';
+                $tax['amount']    = $this->getAmountPrefix().$this->getOrder()->formatPriceTxt($tax['tax_amount']);
+                $tax['label']     = Mage::helper('tax')->__($tax['title']) . $percent . ':';
+                $tax['font_size'] = $fontSize;
+            }
+        } else {
+            $rates    = Mage::getResourceModel('sales/order_tax_collection')->loadByOrder($this->getOrder())->toArray();
+            $fullInfo = Mage::getSingleton('tax/calculation')->reproduceProcess($rates['items']);
+            $tax_info = array();
 
-             foreach ($info['rates'] as $rate) {
-                $percent = $rate['percent'] ? ' (' . $rate['percent']. '%)' : '';
+            if ($fullInfo) {
+                foreach ($fullInfo as $info) {
+                    if (isset($info['hidden']) && $info['hidden']) {
+                        continue;
+                    }
 
-                $tax_info[] = array(
-                   'amount' => $this->getAmountPrefix().$this->getOrder()->formatPriceTxt($_amount),
-                   'label'  => Mage::helper('tax')->__($rate['title']) . $percent . ':',
-                   'font_size' => $fontSize
-                );
-             }
-          }
-       }
+                    $_amount = $info['amount'];
 
-       return $tax_info;
+                    foreach ($info['rates'] as $rate) {
+                        $percent = $rate['percent'] ? ' (' . $rate['percent']. '%)' : '';
+
+                        $tax_info[] = array(
+                            'amount'    => $this->getAmountPrefix() . $this->getOrder()->formatPriceTxt($_amount),
+                            'label'     => Mage::helper('tax')->__($rate['title']) . $percent . ':',
+                            'font_size' => $fontSize
+                        );
+                    }
+                }
+            }
+            $taxClassAmount = $tax_info;
+        }
+
+        return $taxClassAmount;
     }
 
     /**

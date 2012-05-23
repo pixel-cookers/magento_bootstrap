@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Adminhtml
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -157,6 +157,35 @@ class Mage_Adminhtml_Sales_Recurring_ProfileController extends Mage_Adminhtml_Co
         } else {
             $this->_redirect('*/*/');
         }
+    }
+
+    /**
+     * Cutomer billing agreements ajax action
+     *
+     */
+    public function customerGridAction()
+    {
+        $this->_initCustomer();
+        $this->loadLayout(false)
+            ->renderLayout();
+    }
+
+    /**
+     * Initialize customer by ID specified in request
+     *
+     * @return Mage_Adminhtml_Sales_Billing_AgreementController
+     */
+    protected function _initCustomer()
+    {
+        $customerId = (int) $this->getRequest()->getParam('id');
+        $customer = Mage::getModel('customer/customer');
+
+        if ($customerId) {
+            $customer->load($customerId);
+        }
+
+        Mage::register('current_customer', $customer);
+        return $this;
     }
 
     /**

@@ -20,12 +20,12 @@
  *
  * @category    Mage
  * @package     Mage_Paypal
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 /**
- * Payflow link form
+ * Payflow link iframe block
  *
  * @category   Mage
  * @package    Mage_Paypal
@@ -35,12 +35,22 @@ class Mage_Paypal_Block_Payflow_Link_Form extends Mage_Payment_Block_Form
 {
     /**
      * Internal constructor
-     * Set info template for payment step
+     * Set payment method code
      *
-    */
+     */
     protected function _construct()
     {
         parent::_construct();
-        $this->setTemplate('paypal/hss/info.phtml');
+        $this->setTemplate('paypal/payflowlink/info.phtml');
+    }
+
+    /**
+     * Get frame action URL
+     *
+     * @return string
+     */
+    public function getFrameActionUrl()
+    {
+        return $this->getUrl('paypal/payflow/form', array('_secure' => true));
     }
 }

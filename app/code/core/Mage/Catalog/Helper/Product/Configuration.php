@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Catalog
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -143,7 +143,15 @@ class Mage_Catalog_Helper_Product_Configuration extends Mage_Core_Helper_Abstrac
             }
         }
 
-        return array_merge($options, $this->getCustomOptions($item));
+        $options = array_merge($options, $this->getCustomOptions($item));
+        $isUnConfigured = true;
+        foreach ($options as &$option) {
+            if ($option['value']) {
+                $isUnConfigured = false;
+                break;
+            }
+        }
+        return $isUnConfigured ? array() : $options;
     }
 
     /**

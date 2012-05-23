@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Catalog
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -91,8 +91,7 @@ class Mage_Catalog_Model_Layer_Filter_Category extends Mage_Catalog_Model_Layer_
         }
         $this->_categoryId = $filter;
 
-        $category   = $this->getCategory();
-        Mage::register('current_category_filter', $category);
+        Mage::register('current_category_filter', $this->getCategory(), true);
 
         $this->_appliedCategory = Mage::getModel('catalog/category')
             ->setStoreId(Mage::app()->getStore()->getId())

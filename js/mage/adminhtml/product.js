@@ -19,7 +19,7 @@
  *
  * @category    Mage
  * @package     Mage_Adminhtml
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 
@@ -403,14 +403,14 @@ Product.Configurable.prototype = {
                 var use_default_checked = '';
                 if (attribute.use_default == '1') {
                     use_default_checked = ' checked="checked"';
-                    label_readonly = ' redonly="redonly"';
+                    label_readonly = ' readonly="readonly"';
                 }
 
                 var template = this.addAttributeTemplate.evaluate(attribute);
                 template = template.replace(
-                        new RegExp(' readonly="label"', 'g'), label_readonly);
+                        new RegExp(' readonly="label"', 'ig'), label_readonly);
                 template = template.replace(new RegExp(
-                        ' checked="use_default"', 'g'), use_default_checked);
+                        ' checked="use_default"', 'ig'), use_default_checked);
                 li.update(template);
                 li.attributeObject = attribute;
 

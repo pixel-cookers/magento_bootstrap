@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Sales
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -37,9 +37,9 @@ class Mage_Sales_Block_Adminhtml_Customer_Edit_Tab_Recurring_Profile
      * Disable filters and paging
      *
      */
-    public function _construct()
+    public function __construct()
     {
-        parent::_construct();
+        parent::__construct();
         $this->setId('customer_edit_tab_recurring_profile');
     }
 
@@ -108,5 +108,15 @@ class Mage_Sales_Block_Adminhtml_Customer_Edit_Tab_Recurring_Profile
     public function getAfter()
     {
         return 'orders';
+    }
+
+    /**
+     * Return grid url
+     *
+     * @return string
+     */
+    public function getGridUrl()
+    {
+        return $this->getUrl('*/sales_recurring_profile/customerGrid', array('_current' => true));
     }
 }

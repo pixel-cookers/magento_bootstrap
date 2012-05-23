@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_GoogleCheckout
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -129,12 +129,17 @@ EOT;
             $weight     = (float) $item->getWeight();
             $weightUnit = self::ITEM_WEIGHT_UNIT;
 
+            $unitPrice = $item->getBaseCalculationPrice();
+            if (Mage::helper('weee')->includeInSubtotal()) {
+                $unitPrice += $item->getBaseWeeeTaxAppliedAmount();
+            }
+
             $xml .= <<<EOT
             <item>
                 <merchant-item-id><![CDATA[{$item->getSku()}]]></merchant-item-id>
                 <item-name><![CDATA[{$item->getName()}]]></item-name>
                 <item-description><![CDATA[{$item->getDescription()}]]></item-description>
-                <unit-price currency="{$this->getCurrency()}">{$item->getBaseCalculationPrice()}</unit-price>
+                <unit-price currency="{$this->getCurrency()}">{$unitPrice}</unit-price>
                 <quantity>{$item->getQty()}</quantity>
                 <item-weight unit="{$weightUnit}" value="{$weight}" />
                 <tax-table-selector>{$taxClass}</tax-table-selector>
@@ -743,17 +748,21 @@ EOT;
                     foreach ($taxRates as $rate) {
                         $xml .= <<<EOT
                                     <{$type}-tax-rule>
-                                        <tax-area>
+                                        <tax-areas>
 
 EOT;
                         if ($rate['country'] === Mage_Usa_Model_Shipping_Carrier_Abstract::USA_COUNTRY_ID) {
                             if (!empty($rate['postcode']) && $rate['postcode'] !== '*') {
-                                $xml .= <<<EOT
-                                            <us-zip-area>
-                                                <zip-pattern>{$rate['postcode']}</zip-pattern>
-                                            </us-zip-area>
+                                $rate['postcode'] = Mage::helper('googlecheckout')
+                                    ->zipRangeToZipPattern($rate['postcode']);
+                                foreach ($rate['postcode'] as $postcode) {
+                                    $xml .= <<<EOT
+                                                <us-zip-area>
+                                                    <zip-pattern>$postcode</zip-pattern>
+                                                </us-zip-area>
 
 EOT;
+                                }
                             } else if (!empty($rate['state'])) {
                                 $xml .= <<<EOT
                                             <us-state-area>
@@ -788,7 +797,7 @@ EOT;
                             }
                         }
                         $xml .= <<<EOT
-                                        </tax-area>
+                                        </tax-areas>
                                         <rate>{$rate['value']}</rate>
 EOT;
                         if ($shippingTaxed) {
@@ -892,10 +901,7 @@ EOT;
     {
         $customerGroup = $this->getQuote()->getCustomerGroupId();
         if (!$customerGroup) {
-            $customerGroup = Mage::getStoreConfig(
-                Mage_Customer_Model_Group::XML_PATH_DEFAULT_ID,
-                $this->getQuote()->getStoreId()
-            );
+            $customerGroup = Mage::helper('customer')->getDefaultCustomerGroupId($this->getQuote()->getStoreId());
         }
         return Mage::getModel('customer/group')->load($customerGroup)->getTaxClassId();
     }

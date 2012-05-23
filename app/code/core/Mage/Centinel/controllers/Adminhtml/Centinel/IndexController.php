@@ -20,13 +20,16 @@
  *
  * @category    Mage
  * @package     Mage_Centinel
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
 /**
  * Centinel Index Controller
  *
+ * @category Mage
+ * @package  Mage_Centinel
+ * @author   Magento Core Team <core@magentocommerce.com>
  */
 class Mage_Centinel_Adminhtml_Centinel_IndexController extends Mage_Adminhtml_Controller_Action
 {
@@ -43,12 +46,9 @@ class Mage_Centinel_Adminhtml_Centinel_IndexController extends Mage_Adminhtml_Co
             if (!$validator) {
                 throw new Exception('This payment method does not have centinel validation.');
             }
+            $validator->reset();
             $this->_getPayment()->importData($paymentData);
-            if ($validator->shouldAuthenticate()) {
-                $result['authenticationUrl'] = $validator->getAuthenticationStartUrl();
-            } else {
-                Mage::throwException(Mage::helper('centinel')->__('This card has failed validation, but it is possible to place the order.'));
-            }
+            $result['authenticationUrl'] = $validator->getAuthenticationStartUrl();
         } catch (Mage_Core_Exception $e) {
             $result['message'] = $e->getMessage();
         } catch (Exception $e) {

@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Shipping
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -111,43 +111,49 @@ class Mage_Shipping_Model_Resource_Carrier_Tablerate extends Mage_Core_Model_Res
      * Return table rate array or false by rate request
      *
      * @param Mage_Shipping_Model_Rate_Request $request
-     * @return array
+     * @return array|boolean
      */
     public function getRate(Mage_Shipping_Model_Rate_Request $request)
     {
         $adapter = $this->_getReadAdapter();
-        $bind    = array(
-            ':website_id'   => (int)$request->getWebsiteId(),
-            ':country_id'   => $request->getDestCountryId(),
-            ':region_id'    => (int)$request->getDestRegionId(),
-            ':postcode'     => $request->getDestPostcode()
+        $bind = array(
+            ':website_id' => (int) $request->getWebsiteId(),
+            ':country_id' => $request->getDestCountryId(),
+            ':region_id' => (int) $request->getDestRegionId(),
+            ':postcode' => $request->getDestPostcode()
         );
-        $select  = $adapter->select()
+        $select = $adapter->select()
             ->from($this->getMainTable())
             ->where('website_id = :website_id')
             ->order(array('dest_country_id DESC', 'dest_region_id DESC', 'dest_zip DESC'))
             ->limit(1);
 
-        // render destination condition
+        // Render destination condition
         $orWhere = '(' . implode(') OR (', array(
             "dest_country_id = :country_id AND dest_region_id = :region_id AND dest_zip = :postcode",
             "dest_country_id = :country_id AND dest_region_id = :region_id AND dest_zip = ''",
+
+            // Handle asterix in dest_zip field
+            "dest_country_id = :country_id AND dest_region_id = :region_id AND dest_zip = '*'",
+            "dest_country_id = :country_id AND dest_region_id = 0 AND dest_zip = '*'",
+            "dest_country_id = '0' AND dest_region_id = :region_id AND dest_zip = '*'",
+            "dest_country_id = '0' AND dest_region_id = 0 AND dest_zip = '*'",
+
             "dest_country_id = :country_id AND dest_region_id = 0 AND dest_zip = ''",
             "dest_country_id = :country_id AND dest_region_id = 0 AND dest_zip = :postcode",
             "dest_country_id = :country_id AND dest_region_id = 0 AND dest_zip = '*'",
-            "dest_country_id = '0' AND dest_region_id = 0 AND dest_zip = '*'",
         )) . ')';
         $select->where($orWhere);
 
-        // render condition by condition name
+        // Render condition by condition name
         if (is_array($request->getConditionName())) {
             $orWhere = array();
-            $i       = 0;
+            $i = 0;
             foreach ($request->getConditionName() as $conditionName) {
                 $bindNameKey  = sprintf(':condition_name_%d', $i);
                 $bindValueKey = sprintf(':condition_value_%d', $i);
                 $orWhere[] = "(condition_name = {$bindNameKey} AND condition_value <= {$bindValueKey})";
-                $bind[$bindNameKey]  = $conditionName;
+                $bind[$bindNameKey] = $conditionName;
                 $bind[$bindValueKey] = $request->getData($conditionName);
                 $i++;
             }
@@ -164,7 +170,7 @@ class Mage_Shipping_Model_Resource_Carrier_Tablerate extends Mage_Core_Model_Res
         }
 
         $result = $adapter->fetchRow($select, $bind);
-        // normalize destination zip code
+        // Normalize destination zip code
         if ($result && $result['dest_zip'] == '*') {
             $result['dest_zip'] = '';
         }
@@ -261,8 +267,7 @@ class Mage_Shipping_Model_Resource_Carrier_Tablerate extends Mage_Core_Model_Res
         $adapter->commit();
 
         if ($this->_importErrors) {
-            $error = Mage::helper('shipping')->__('%1$d records have been imported. See the following list of errors for each record that has not been imported: %2$s',
-                $this->_importedRows, implode(" \n", $this->_importErrors));
+            $error = Mage::helper('shipping')->__('File has not been imported. See the following list of errors: %s', implode(" \n", $this->_importErrors));
             Mage::throwException($error);
         }
 
@@ -343,8 +348,7 @@ class Mage_Shipping_Model_Resource_Carrier_Tablerate extends Mage_Core_Model_Res
     {
         // validate row
         if (count($row) < 5) {
-            $this->_importErrors[] = Mage::helper('shipping')->__('Invalid Table Rates format in the Row #%s',
-                $rowNumber);
+            $this->_importErrors[] = Mage::helper('shipping')->__('Invalid Table Rates format in the Row #%s', $rowNumber);
             return false;
         }
 
@@ -361,8 +365,7 @@ class Mage_Shipping_Model_Resource_Carrier_Tablerate extends Mage_Core_Model_Res
         } elseif ($row[0] == '*' || $row[0] == '') {
             $countryId = '0';
         } else {
-            $this->_importErrors[] = Mage::helper('shipping')->__('Invalid Country "%s" in the Row #%s.',
-                $row[0], $rowNumber);
+            $this->_importErrors[] = Mage::helper('shipping')->__('Invalid Country "%s" in the Row #%s.', $row[0], $rowNumber);
             return false;
         }
 
@@ -372,8 +375,7 @@ class Mage_Shipping_Model_Resource_Carrier_Tablerate extends Mage_Core_Model_Res
         } elseif ($row[1] == '*' || $row[1] == '') {
             $regionId = 0;
         } else {
-            $this->_importErrors[] = Mage::helper('shipping')->__('Invalid Region/State "%s" in the Row #%s.',
-                $row[1], $rowNumber);
+            $this->_importErrors[] = Mage::helper('shipping')->__('Invalid Region/State "%s" in the Row #%s.', $row[1], $rowNumber);
             return false;
         }
 
@@ -387,24 +389,21 @@ class Mage_Shipping_Model_Resource_Carrier_Tablerate extends Mage_Core_Model_Res
         // validate condition value
         $value = $this->_parseDecimalValue($row[3]);
         if ($value === false) {
-            $this->_importErrors[] = Mage::helper('shipping')->__('Invalid %s "%s" in the Row #%s.',
-                $this->_getConditionFullName($this->_importConditionName), $row[3], $rowNumber);
+            $this->_importErrors[] = Mage::helper('shipping')->__('Invalid %s "%s" in the Row #%s.', $this->_getConditionFullName($this->_importConditionName), $row[3], $rowNumber);
             return false;
         }
 
         // validate price
         $price = $this->_parseDecimalValue($row[4]);
         if ($price === false) {
-            $this->_importErrors[] = Mage::helper('shipping')->__('Invalid Shipping Price "%s" in the Row #%s.',
-                $row[4], $rowNumber);
+            $this->_importErrors[] = Mage::helper('shipping')->__('Invalid Shipping Price "%s" in the Row #%s.', $row[4], $rowNumber);
             return false;
         }
 
         // protect from duplicate
         $hash = sprintf("%s-%d-%s-%F", $countryId, $regionId, $zipCode, $value);
         if (isset($this->_importUniqueHash[$hash])) {
-            $this->_importErrors[] = Mage::helper('shipping')->__('Duplicate Row #%s (Country "%s", Region/State "%s", Zip "%s" and Value "%s").',
-                $rowNumber, $row[0], $row[1], $zipCode, $value);
+            $this->_importErrors[] = Mage::helper('shipping')->__('Duplicate Row #%s (Country "%s", Region/State "%s", Zip "%s" and Value "%s").', $rowNumber, $row[0], $row[1], $zipCode, $value);
             return false;
         }
         $this->_importUniqueHash[$hash] = true;

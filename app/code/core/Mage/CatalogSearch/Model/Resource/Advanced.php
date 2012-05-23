@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_CatalogSearch
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -117,10 +117,12 @@ class Mage_CatalogSearch_Model_Resource_Advanced extends Mage_Core_Model_Resourc
 
         $conditions = array();
         if (strlen($value['from']) > 0) {
-            $conditions[] = $adapter->quoteInto('price_index.min_price %s * %s >= ?', $value['from']);
+            $conditions[] = $adapter->quoteInto(
+                'price_index.min_price %s * %s >= ?', $value['from'], Zend_Db::FLOAT_TYPE);
         }
         if (strlen($value['to']) > 0) {
-            $conditions[] = $adapter->quoteInto('price_index.min_price %s * %s <= ?', $value['to']);
+            $conditions[] = $adapter->quoteInto(
+                'price_index.min_price %s * %s <= ?', $value['to'], Zend_Db::FLOAT_TYPE);
         }
 
         if (!$conditions) {

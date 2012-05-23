@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Core
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -84,6 +84,13 @@ class Mage_Core_Model_Cache
     protected $_requestProcessors = array();
 
     /**
+     * Disallow cache saving
+     *
+     * @var bool
+     */
+    protected $_disallowSave = false;
+
+    /**
      * List of allowed cache options
      *
      * @var array
@@ -119,6 +126,10 @@ class Mage_Core_Model_Cache
         if (isset($options['request_processors'])) {
             $this->_requestProcessors = $options['request_processors'];
         }
+
+        if (isset($options['disallow_save'])) {
+            $this->_disallowSave = $options['disallow_save'];
+        }
     }
 
     /**
@@ -145,7 +156,13 @@ class Mage_Core_Model_Cache
                 }
                 break;
             case 'memcached':
-                if (extension_loaded('memcache')) {
+                if (extension_loaded('memcached')) {
+                    if (isset($cacheOptions['memcached'])) {
+                        $options = $cacheOptions['memcached'];
+                    }
+                    $enable2levels = true;
+                    $backendType = 'Libmemcached';
+                } elseif (extension_loaded('memcache')) {
                     if (isset($cacheOptions['memcached'])) {
                         $options = $cacheOptions['memcached'];
                     }
@@ -281,7 +298,8 @@ class Mage_Core_Model_Cache
             $options['caching'] = true;
         }
         if (!array_key_exists('lifetime', $options)) {
-            $options['lifetime'] = isset($cacheOptions['lifetime']) ? $cacheOptions['lifetime'] : self::DEFAULT_LIFETIME;
+            $options['lifetime'] = isset($cacheOptions['lifetime']) ? $cacheOptions['lifetime']
+                : self::DEFAULT_LIFETIME;
         }
         if (!array_key_exists('automatic_cleaning_factor', $options)) {
             $options['automatic_cleaning_factor'] = 0;
@@ -355,6 +373,9 @@ class Mage_Core_Model_Cache
          */
         if (!in_array(Mage_Core_Model_Config::CACHE_TAG, $tags)) {
             $tags[] = Mage_Core_Model_App::CACHE_TAG;
+        }
+        if ($this->_disallowSave) {
+            return true;
         }
         return $this->_frontend->save((string)$data, $this->_id($id), $this->_tags($tags), $lifeTime);
     }
@@ -557,7 +578,7 @@ class Mage_Core_Model_Cache
     }
 
     /**
-     * Save invalicated cache types
+     * Save invalidated cache types
      *
      * @param array $types
      * @return Mage_Core_Model_Cache
@@ -592,7 +613,7 @@ class Mage_Core_Model_Cache
      * Mark specific cache type(s) as invalidated
      *
      * @param string|array $typeCode
-     * @return
+     * @return Mage_Core_Model_Cache
      */
     public function invalidateType($typeCode)
     {
@@ -610,7 +631,8 @@ class Mage_Core_Model_Cache
     /**
      * Clean cached data for specific cache type
      *
-     * @param $typeCode
+     * @param string $typeCode
+     * @return Mage_Core_Model_Cache
      */
     public function cleanType($typeCode)
     {
