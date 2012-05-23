@@ -1586,11 +1586,11 @@ tr {
 /* Shopping cart tax info */
 .cart-tax-info {
 	display:block;
+}
 
-	&,
-	.cart-price {
-		padding-right:20px;
-	}
+.cart-tax-info,
+.cart-price {
+	padding-right:20px;
 }
 
 .cart-tax-total {
@@ -1996,20 +1996,19 @@ header {
 	/* 1st Level */
 	ul {
 		
+		li,
+		li.active,
+		li.over {
+			background:none;
+			border:none;
+			float:none;
+			margin:0;
+			padding:0;
+			padding-bottom:1px;
+			text-transform:none;
+		}
+		
 		li{
-
-			&,
-			&.active,
-			&.over {
-				background:none;
-				border:none;
-				float:none;
-				margin:0;
-				padding:0;
-				padding-bottom:1px;
-				text-transform:none;
-			}
-
 			&.parent { }
 
 			&.last {
@@ -3046,11 +3045,8 @@ header {
 	}
 }
 .block .regular-price {
-
-	&,
-	.price {  }
 }
-
+.block .regular-price, .block .regular-price .price {  }
 /* Old price */
 .old-price {
 	margin:0;
