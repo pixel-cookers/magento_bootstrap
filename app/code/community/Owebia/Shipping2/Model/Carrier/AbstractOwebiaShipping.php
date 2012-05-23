@@ -1,49 +1,95 @@
 <?php
 
 /**
- * Magento Owebia Shipping 2 Module
+ * Copyright (c) 2008-12 Owebia
  *
- * NOTICE OF LICENSE
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *
- * This source file is subject to the Open Software License (OSL 3.0)
- * that is bundled with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/osl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@magentocommerce.com so we can send you a copy immediately.
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+ * IN THE SOFTWARE.
  *
- * @category   Owebia
- * @package    Owebia_Shipping2
- * @copyright  Copyright (c) 2008-11 Owebia (http://www.owebia.com/)
+ * @website    http://www.owebia.com/
+ * @project    Magento Owebia Shipping 2 module
  * @author     Antoine Lemoine
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
+ * @license    http://www.opensource.org/licenses/MIT  The MIT License (MIT)
+**/
 
 // Pour gérer les cas où il y a eu compilation
 if (file_exists(dirname(__FILE__).'/Owebia_Shipping2_includes_OwebiaShippingHelper.php')) include_once 'Owebia_Shipping2_includes_OwebiaShippingHelper.php';
 else include_once Mage::getBaseDir('code').'/community/Owebia/Shipping2/includes/OwebiaShippingHelper.php';
 
 
+class Magento_AttributeSet implements OS_AttributeSet {
+	private $id;
+	private $loaded_attribute_set;
+	public function __construct($id) {
+		$this->id = (int)$id;
+	}
+	private function _loadAttributeSet() {
+		if (!isset($this->loaded_attribute_set)) $this->loaded_attribute_set = Mage::getModel('eav/entity_attribute_set')->load($this->id);
+		return $this->loaded_attribute_set;
+	}
+	public function getId() {
+		return $this->id;
+	}
+	public function getName() {
+		$attribute_set = $this->_loadAttributeSet();
+		return $attribute_set->getAttributeSetName();
+	}
+	public function toString() {
+		return $this->getName().' (id:'.$this->getId().')';
+	}
+}
+
+class Magento_Category implements OS_Category {
+	private $id;
+	private $loaded_category;
+	public function __construct($id) {
+		$this->id = (int)$id;
+	}
+	private function _loadCategory() {
+		if (!isset($this->loaded_category)) $this->loaded_category = Mage::getModel('catalog/category')->load($this->id);
+		return $this->loaded_category;
+	}
+	public function getId() {
+		return $this->id;
+	}
+	public function getName() {
+		$category = $this->_loadCategory();
+		return $category->getName();
+	}
+	public function toString() {
+		return $this->getName().' (id:'.$this->getId().', url_key:'.$this->_loadCategory()->getUrlKey().')';
+	}
+}
 
 class Magento_Product implements OS_Product {
 	private $parent_cart_item;
 	private $cart_item;
 	private $cart_product;
 	private $loaded_product;
+	private $type;
 	private $quantity;
 	private $options;
+	private $categories;
 	
-	public function Magento_Product($cart_item, $parent_cart_item) {
+	public function __construct($cart_item, $parent_cart_item) {
 		$this->cart_item = $cart_item;
-		$this->cart_product = $cart_item->getProduct();
 		$this->parent_cart_item = $parent_cart_item;
-		$this->quantity = isset($parent_cart_item) ? $parent_cart_item->getQty() : $cart_item->getQty();
+		$this->type = $parent_cart_item ? $parent_cart_item->getProduct()->getTypeId() : $cart_item->getProduct()->getTypeId();
+		$this->quantity = $parent_cart_item ? $parent_cart_item->getQty() : $cart_item->getQty();
+		if ($this->type=='bundle') $this->cart_product = $parent_cart_item->getProduct();
+		else $this->cart_product = $cart_item->getProduct();
 	}
 
 	private function getProductOptions() {
 		if (isset($this->options)) return $this->options;
-		$item = $this->cart_item;
+		$item = isset($this->parent_cart_item) ? $this->parent_cart_item : $this->cart_item; // For configurable products with options
 		$options = array();
 		if ($optionIds = $item->getOptionByCode('option_ids')) {
 			foreach (explode(',', $optionIds->getValue()) as $optionId) {
@@ -80,26 +126,11 @@ class Magento_Product implements OS_Product {
 		$options = $this->getProductOptions();
 		if (isset($options[$option_name])) return $get_by_id ? $options[$option_name]['value_id'] : $options[$option_name]['value'];
 		else return $value;
-		/*
-		foreach ($product->getOptions() as $option) {
-			if ($option->getTitle()==$option_name) {
-				$custom_option = $product->getCustomOption('option_'.$option->getId());
-				if ($custom_option) {
-					$value = $custom_option->getValue();
-					if ($option->getType()=='drop_down' && !$get_by_id) {
-						$option_value = $option->getValueById($value);
-						if ($option_value) $value = $option_value->getTitle();
-					}
-				}
-				break;
-			}
-		}
-		*/
 	}
 	
 	public function getAttribute($attribute_name, $get_by_id=false) {
 		$value = null;
-		$product = $this->_getLoadedProduct();
+		$product = $this->_loadProduct();
 
 		if ($attribute_name=='price-tax+discount') {
 			return $this->cart_item['base_original_price']-$this->cart_item['discount_amount']/$this->quantity;
@@ -111,6 +142,12 @@ class Magento_Product implements OS_Product {
 			return $this->cart_item['price_incl_tax'];
 			//return Mage::helper('checkout')->getPriceInclTax($this->cart_item);
 		}
+		// Dynamic weight for bundle product
+		if ($this->type=='bundle' && $attribute_name=='weight' && $product->getData('weight_type')==0) {
+			// !!! Use cart_product and not product
+			return $this->cart_product->getTypeInstance(true)->getWeight($this->cart_product);
+		}
+
 		$attribute = $product->getResource()->getAttribute($attribute_name);
 		if ($attribute) {
 			$input_type = $attribute->getFrontend()->getInputType();
@@ -126,9 +163,13 @@ class Magento_Product implements OS_Product {
 		return $value;
 	}
 
-	private function _getLoadedProduct() {
+	private function _loadProduct() {
 		if (!isset($this->loaded_product)) $this->loaded_product = Mage::getModel('catalog/product')->load($this->cart_product->getId());
 		return $this->loaded_product;
+	}
+
+	public function toString() {
+		return $this->getName().' (id:'.$this->getId().', sku:'.$this->getSku().')';
 	}
 
 	public function getQuantity() {
@@ -137,6 +178,35 @@ class Magento_Product implements OS_Product {
 
 	public function getName() {
 		return $this->cart_product->getName();
+	}
+
+	public function getId() {
+		return $this->cart_product->getId();
+	}
+
+	public function getAttributeSet() {
+		if (!isset($this->attribute_set)) {
+			$product = $this->_loadProduct();
+			$this->attribute_set = new Magento_AttributeSet($product->getAttributeSetId());
+		}
+		return $this->attribute_set;
+	}
+
+	public function getCategory() {
+		$categories = $this->getCategories();
+		return $categories ? $categories[0] : null;
+	}
+
+	public function getCategories() {
+		if (!isset($this->categories)) {
+			$product = $this->_loadProduct();
+			$ids = $product->getCategoryIds();
+			$this->categories = array();
+			foreach ($ids as $id) {
+				$this->categories[] = new Magento_Category($id);
+			}
+		}
+		return $this->categories;
 	}
 
 	public function getWeight() {
@@ -160,8 +230,7 @@ class Magento_Product implements OS_Product {
 	}
 }
 
-abstract class Owebia_Shipping2_Model_Carrier_AbstractOwebiaShipping
-	extends Mage_Shipping_Model_Carrier_Abstract
+abstract class Owebia_Shipping2_Model_Carrier_AbstractOwebiaShipping extends Mage_Shipping_Model_Carrier_Abstract
 {
 	protected $_translate_inline;
 	protected $_result;
@@ -177,6 +246,8 @@ abstract class Owebia_Shipping2_Model_Carrier_AbstractOwebiaShipping
 	 * @return Mage_Shipping_Model_Rate_Result
 	 */
 	public function collectRates(Mage_Shipping_Model_Rate_Request $request) {
+		//setlocale(LC_NUMERIC, 'fr_FR');
+	
 		// skip if not enabled
 		if (!$this->__getConfigData('active')) return false;
 
@@ -189,9 +260,11 @@ abstract class Owebia_Shipping2_Model_Carrier_AbstractOwebiaShipping
 			'cart.weight' => $request->_data['package_weight'],
 			'cart.quantity' => $request->_data['package_qty'],
 			'destination.country.code' => $request->_data['dest_country_id'],
+			'destination.country.name' => $this->__getCountryName($request->_data['dest_country_id']),
 			'destination.region.code' => $request->_data['dest_region_code'],
 			'destination.postcode' => $request->_data['dest_postcode'],
 			'origin.country.code' => $request->_data['country_id'],
+			'origin.country.name' => $this->__getCountryName($request->_data['country_id']),
 			'origin.region.code' => $request->_data['region_id'],
 			'origin.postcode' => $request->_data['postcode'],
 			'free_shipping' => $request->getFreeShipping(),
@@ -228,7 +301,7 @@ abstract class Owebia_Shipping2_Model_Carrier_AbstractOwebiaShipping
 		$process['data']['cart.weight.for-charge'] = $process['data']['cart.weight'];
 
 		foreach ($cart_items as $item) {
-			if ($item->getProduct()->getTypeId()!='configurable') {
+			if ($item->getProduct()->getTypeId()!='configurable' && $item->getProduct()->getTypeId()!='bundle') {
 				$parent_item_id = $item->getParentItemId();
 				$magento_product = new Magento_Product($item, isset($cart_items[$parent_item_id]) ? $cart_items[$parent_item_id] : null);
 				$process['cart.products'][] = $magento_product;
@@ -281,7 +354,9 @@ abstract class Owebia_Shipping2_Model_Carrier_AbstractOwebiaShipping
 	}
 
 	public function getTrackingInfo($tracking_number) {
-		$tracking_url = $this->__getConfigData('tracking_view_url');
+		$original_tracking_number = $tracking_number;
+		$global_tracking_url = $this->__getConfigData('tracking_view_url');
+		$tracking_url = $global_tracking_url;
 		$parts = explode(':',$tracking_number);
 		if (count($parts)>=2) {
 			$tracking_number = $parts[1];
@@ -302,7 +377,7 @@ abstract class Owebia_Shipping2_Model_Carrier_AbstractOwebiaShipping
 			->setTracking($tracking_number)
 			->addData(
 				array(
-					'status'=>'<a target="_blank" href="'.str_replace('{tracking_number}',$tracking_number,$tracking_url).'">'.__('track the package').'</a>'
+					'status'=> $tracking_url ? '<a target="_blank" href="'.str_replace('{tracking_number}',$tracking_number,$tracking_url).'">'.__('track the package').'</a>' : "suivi non disponible pour le colis {$tracking_number} (original_tracking_number='{$original_tracking_number}', global_tracking_url='{$global_tracking_url}'".(isset($row) ? ", tmp_tracking_url='{$tmp_tracking_url}'" : '').")"
 				)
 			)
 		;
@@ -313,13 +388,22 @@ abstract class Owebia_Shipping2_Model_Carrier_AbstractOwebiaShipping
 		if ($trackings = $tracking_result->getAllTrackings()) return $trackings[0];
 		return false;
 	}
+	
+	public function getCustomVar($var) {
+		return Mage::getModel('core/variable')->loadByCode($var)->getValue('text');
+	}
 
 	/***************************************************************************************************************************/
 
 	protected function _process(&$process) {
+		$timestamp = $process['data']['date.timestamp'];
 		$process['data'] = array_merge($process['data'],array(
-			'destination.country.name' => $this->__getCountryName($process['data']['destination.country.code']),
-			'origin.country.name' => $this->__getCountryName($process['data']['origin.country.code']),
+			'date.year' => (int)date('Y',$timestamp),
+			'date.month' => (int)date('m',$timestamp),
+			'date.day' => (int)date('d',$timestamp),
+			'date.hour' => (int)date('H',$timestamp),
+			'date.minute' => (int)date('i',$timestamp),
+			'date.second' => (int)date('s',$timestamp),
 		));
 
 		$debug = (bool)(isset($_GET['debug']) ? $_GET['debug'] : $this->__getConfigData('debug'));
@@ -328,7 +412,6 @@ abstract class Owebia_Shipping2_Model_Carrier_AbstractOwebiaShipping
 		$value_found = false;
 		foreach ($process['config'] as $row) {
 			$result = $this->_helper->processRow($process,$row);
-			$this->_addMessages($this->_helper->getMessages());
 			if ($result->success) {
 				$value_found = true;
 				$this->__appendMethod($process,$row,$result->result);
@@ -337,24 +420,15 @@ abstract class Owebia_Shipping2_Model_Carrier_AbstractOwebiaShipping
 		}
 		
 		$http_request = Mage::app()->getFrontController()->getRequest();
-		if ($debug && $this->_checkRequest($http_request,'checkout/cart/index')) {
+		if ($debug && $this->__checkRequest($http_request,'checkout/cart/index')) {
 			Mage::getSingleton('core/session')->addNotice('DEBUG'.$this->_helper->getDebug());
 		}
-
-		//$this->_appendErrors($process,$this->_messages);
-		//if (!$value_found) $this->__appendError($process,$this->__('No match found'));
-	}
-
-	protected function _checkRequest($http_request, $path) {
-		list($router,$controller,$action) = explode('/',$path);
-		return $http_request->getRouteName()==$router && $http_request->getControllerName()==$controller && $http_request->getActionName()==$action;
 	}
 
 	protected function _getConfig() {
 		if (!isset($this->_config)) {
 			$this->_helper = new OwebiaShippingHelper($this->__getConfigData('config'));
 			$this->_config = $this->_helper->getConfig();
-			$this->_addMessages($this->_helper->getMessages());
 		}
 		return $this->_config;
 	}
@@ -386,21 +460,12 @@ abstract class Owebia_Shipping2_Model_Carrier_AbstractOwebiaShipping
 		));
 	}
 
-	protected function _addMessages($messages) {
-		if (!is_array($messages)) $messages = array($messages);
-		if (!is_array($this->_messages)) $this->_messages = $messages;
-		else $this->_messages = array_merge($this->_messages,$messages);
-	}
-
-	protected function _appendErrors(&$process, $messages) {
-		if (is_array($messages)) {
-			foreach ($messages as $message) {
-				$this->__appendError($process,$this->__($message));
-			}
-		}
-	}
-	
 	/***************************************************************************************************************************/
+
+	protected function __checkRequest($http_request, $path) {
+		list($router,$controller,$action) = explode('/',$path);
+		return $http_request->getRouteName()==$router && $http_request->getControllerName()==$controller && $http_request->getActionName()==$action;
+	}
 
 	protected function __getDefaultProcess() {
 		$process = array(
@@ -409,6 +474,7 @@ abstract class Owebia_Shipping2_Model_Carrier_AbstractOwebiaShipping
 			'data' => null,
 			'result' => Mage::getModel('shipping/rate_result'),
 			'stop_to_first_match' => $this->__getConfigData('stop_to_first_match'),
+			'store_interface' => $this,
 		);
 		return $process;
 	}
@@ -424,28 +490,35 @@ abstract class Owebia_Shipping2_Model_Carrier_AbstractOwebiaShipping
 			if (isset($customer_group_id2)) $customer_group_id = $customer_group_id2;
 		}
 		$customer_group_code = Mage::getSingleton('customer/group')->load($customer_group_id)->getCode();
-		$timestamp = Mage::getModel('core/date')->timestamp();
+		
+		$coupon_code = null;
+		$session = Mage::getSingleton('checkout/session');
+		if ($session && ($quote = $session->getQuote()) && $quote->hasCouponCode() && $quote->getCouponCode()) {
+			$coupon_code = $quote->getCouponCode();
+		} else { // Pour les commandes depuis Adminhtml
+			$session = Mage::getSingleton('adminhtml/session_quote');
+			if ($session && ($quote = $session->getQuote()) && $quote->hasCouponCode() && $quote->getCouponCode()) {
+				$coupon_code = $quote->getCouponCode();
+			}
+		}
 
-		$properties = array_merge(OwebiaShippingHelper::getDefaultProcessData(),array(
-			'info.magento.version' => Mage::getVersion(),
-			'info.module.version' => (string)$mage_config->getNode('modules/Owebia_Shipping2/version'),
-			'info.carrier.code' => $this->_code,
-			'cart.weight.unit' => Mage::getStoreConfig('owebia/shipping/weight_unit'),
-			'cart.coupon' => Mage::getSingleton('checkout/session')->getQuote()->getCouponCode(),
-			'customer.group.id' => $customer_group_id,
-			'customer.group.code' => $customer_group_code,
-			'store.id' => $store->getId(),
-			'store.code' => $store->getCode(),
-			'store.name' => $store->getConfig('general/store_information/name'),
-			'store.address' => $store->getConfig('general/store_information/address'),
-			'store.phone' => $store->getConfig('general/store_information/phone'),
-			'date.timestamp' => $timestamp,
-			'date.year' => (int)date('Y',$timestamp),
-			'date.month' => (int)date('m',$timestamp),
-			'date.day' => (int)date('d',$timestamp),
-			'date.hour' => (int)date('H',$timestamp),
-			'date.minute' => (int)date('i',$timestamp),
-			'date.second' => (int)date('s',$timestamp),
+		$properties = array_merge(array(
+				'info.magento.version' => Mage::getVersion(),
+			),
+			OwebiaShippingHelper::getDefaultProcessData(),
+			array(
+				'info.module.version' => (string)$mage_config->getNode('modules/Owebia_Shipping2/version'),
+				'info.carrier.code' => $this->_code,
+				'cart.weight.unit' => Mage::getStoreConfig('owebia/shipping/weight_unit'),
+				'cart.coupon' => $coupon_code,
+				'customer.group.id' => $customer_group_id,
+				'customer.group.code' => $customer_group_code,
+				'store.id' => $store->getId(),
+				'store.code' => $store->getCode(),
+				'store.name' => $store->getConfig('general/store_information/name'),
+				'store.address' => $store->getConfig('general/store_information/address'),
+				'store.phone' => $store->getConfig('general/store_information/phone'),
+				'date.timestamp' => Mage::getModel('core/date')->timestamp(),
 		));
 		return $properties;
 	}
@@ -468,6 +541,7 @@ abstract class Owebia_Shipping2_Model_Carrier_AbstractOwebiaShipping
 		$process['result']->append($method);
 	}
 
+	/*
 	protected function __appendError(&$process, $message) {
 		if (isset($process['result'])) {
 			$error = Mage::getModel('shipping/rate_result_error')
@@ -478,6 +552,7 @@ abstract class Owebia_Shipping2_Model_Carrier_AbstractOwebiaShipping
 			$process['result']->append($error);
 		}
 	}
+	*/
 	
 	protected function __formatPrice($price) {
 		if (!isset($this->_core_helper)) $this->_core_helper = Mage::helper('core');

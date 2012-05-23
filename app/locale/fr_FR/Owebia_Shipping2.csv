@@ -107,17 +107,22 @@
 	<li><a href=""#"" onclick=""os2editor.help('property.label');"">Le libellé : `label`</a></li>
 	<li><a href=""#"" onclick=""os2editor.help('property.fees');"">Les frais de port : `fees`</a>
 		<ul>
-			<li><a href=""#"" onclick=""os2editor.help('more.formulas');"">Initiation aux formules</a></li>
-			<li><a href=""#"" onclick=""os2editor.help('more.tables');"">Utilisation des tables de tarifs</a></li>
+			<li class=""new""><a href=""#"" onclick=""os2editor.help('more.formulas');"">Initiation aux formules</a> (utilisation des chaînes de caractères avec la version 2.4.5)
+				<ul>
+					<li><a href=""#"" onclick=""os2editor.help('more.special-functions');"">Fonctions spéciales dans les formules (min, max, substr, in_array)</a> (substr et in_array depuis la version 2.4.5)</li>
+				</ul>
+			</li>
 			<li><a href=""#"" onclick=""os2editor.help('more.copy');"">Faire une copie d'une propriété d'une autre méthode</a></li>
-			<li><a href=""#"" onclick=""os2editor.help('more.special-functions');"">Fonctions spéciales dans les formules</a></li>
-			<li class=""new""><a href=""#"" onclick=""os2editor.help('more.attributes-options');"">Utilisation des attributs ou des options des produits</a> (amélioration dans la version 2.3.10)</li>
-			<li><a href=""#"" onclick=""os2editor.help('more.foreach');"">Utilisation des boucles foreach</a></li>
+			<li><a href=""#"" onclick=""os2editor.help('more.tables');"">Utilisation des tables de tarifs</a></li>
+			<li class=""new""><a href=""#"" onclick=""os2editor.help('more.switch');"">Utilisation des ""switch"" (tables de correspondance)</a> (depuis la version 2.4.5)</li>
+			<li class=""new""><a href=""#"" onclick=""os2editor.help('more.attributes-options');"">Utilisation des attributs ou des options des produits (sum, count, min, max)</a> (support des jeux d'attributs depuis la version 2.4.6)</li>
+			<li class=""new""><a href=""#"" onclick=""os2editor.help('more.foreach');"">Utilisation des boucles foreach</a> (support des jeux d'attributs depuis la version 2.4.6)</li>
+			<li class=""new""><a href=""#"" onclick=""os2editor.help('more.categories');"">Utilisation des catégories dans les boucles foreach ou dans les fonctions spéciales</a> (depuis la version 2.4.2)</li>
 			<li><a href=""#"" onclick=""os2editor.help('more.custom-variables');"">Utilisation des variables personnalisées de Magento (Custom Variables)</a></li>
 		</ul>
 	</li>
 	<li><a href=""#"" onclick=""os2editor.help('property.conditions');"">Les conditions : `conditions`</a></li>
-	<li class=""new""><a href=""#"" onclick=""os2editor.help('property.destination');"">La destination : `destination`</a> (amélioration dans la version 2.4.0)</li>
+	<li class=""new""><a href=""#"" onclick=""os2editor.help('property.destination');"">La destination : `destination`</a> (expressions régulières depuis la version 2.4.0)</li>
 	<li><a href=""#"" onclick=""os2editor.help('property.enabled');"">L'activation : `enabled`</a></li>
 	<li><a href=""#"" onclick=""os2editor.help('property.code');"">Le code : `code`</a></li>
 	<li><a href=""#"" onclick=""os2editor.help('property.description');"">La description : `description`</a></li>
@@ -296,23 +301,37 @@ Pour ce faire, utiliser les variables suivantes :</p>
 <ul>
 
 	<li><b>{cart.weight}</b>: poids des marchandises</li>
-	<li class=""new""><b>{cart.weight.for-charge}</b>: poids des marchandises dont la livraison n'est pas offerte (par les règles de prix panier de Magento)</li>
-	<li><b>{cart.price_excluding_tax}</b>: prix HT (équivaut à <b>{cart.price-tax+discount}</b>)</li>
-	<li><b>{cart.price_including_tax}</b>: prix TTC (équivaut à <b>{cart.price+tax+discount}</b>)</li>
-	<li class=""new""><b>{cart.price-tax+discount}</b>: prix HT avec remise</li>
-	<li class=""new""><b>{cart.price-tax-discount}</b>: prix HT sans remise</li>
-	<li class=""new""><b>{cart.price+tax+discount}</b>: prix TTC avec remise</li>
-	<li class=""new""><b>{cart.price+tax-discount}</b>: prix TTC sans remise</li>
+	<li><b>{cart.weight.for-charge}</b>: poids des marchandises dont la livraison n'est pas offerte (par les règles de prix panier de Magento)</li>
 	<li><b>{cart.quantity}</b>: nombre d'articles dans le panier</li>
-	<li class=""new""><b>{cart.coupon}</b>: coupon de réduction</li>
-	<li><b>{date.timestamp}</b>: timestamp UNIX de la date actuelle</li>
-	<li><b>{date.year}</b>: année de la date actuelle</li>
-	<li><b>{date.month}</b>: mois de la date actuelle</li>
-	<li><b>{date.day}</b>: jour de la date actuelle</li>
-	<li><b>{date.hour}</b>: heure de la date actuelle</li>
-	<li><b>{date.minute}</b>: minute de la date actuelle</li>
-	<li><b>{date.second}</b>: seconde de la date actuelle</li>
+	<li><b>{cart.coupon}</b>: coupon de réduction (chaîne de caractère)</li>
+	<li>Prix :
+		<ul>
+			<li><b>{cart.price_excluding_tax}</b>: prix HT (équivaut à <b>{cart.price-tax+discount}</b>)</li>
+			<li><b>{cart.price_including_tax}</b>: prix TTC (équivaut à <b>{cart.price+tax+discount}</b>)</li>
+			<li><b>{cart.price-tax+discount}</b> : prix HT après remise</li>
+			<li><b>{cart.price-tax-discount}</b> : prix HT avant remise</li>
+			<li><b>{cart.price+tax+discount}</b> : prix TTC après remise</li>
+			<li><b>{cart.price+tax-discount}</b>: prix TTC avant remise</li>
+		</ul>
+	</li>
+	<li>Date courante :
+		<ul>
+			<li><b>{date.timestamp}</b>: timestamp UNIX de la date actuelle</li>
+			<li><b>{date.year}</b>, <b>{date.month}</b>, <b>{date.day}</b>, <b>{date.hour}</b>, <b>{date.minute}</b>, <b>{date.second}</b>: année, mois, jour, heure, minute et seconde de la date actuelle</li>
+		</ul>
+	</li>
+	<li>Destination :
+		<ul>
+			<li><b>{destination.country.code}</b>: code du pays de destination</li>
+			<li><b>{destination.country.name}</b>: nom du pays de destination</li>
+			<li><b>{destination.region.code}</b>: code de la région de destination</li>
+			<li><b>{destination.postcode}</b>: code postal de destination</li>
+		</ul>
+	</li>
+	<li>Origine (idem destination) : <b>{origin.country.code}</b>, <b>{origin.country.name}</b>, <b>{origin.region.code}</b>, <b>{origin.postcode}</b></li>
+	</li>
 	<li><b>{free_shipping}</b>: frais de port offert (par une règle dans Magento) [true/false]</li>
+	<li>Autres variables en vrac : {cart.weight.unit}, {customer.group.id}, {customer.group.code}, {store.id}, {store.code}, {store.name}, {store.address}, {store.phone}</li>
 </ul>
 <p>
 	Vous avez la possibilité de mettre des espaces et des retours à la ligne dans les formules (pour aérer).
@@ -321,6 +340,13 @@ Pour ce faire, utiliser les variables suivantes :</p>
 	Vous pouvez également utiliser des fonctionnalités avancées telles que les tables de tarifs, la copie d'une propriété d'une autre méthode,
 	les fonctions spéciales, l'utilisation des attributs et des options des produits ou encore l'utilisation des variables personnalisées.
 </p>
+<p class=""new"" style=""font-weight: bold;"">
+	Lorsque vous utilisez des variables qui ne sont pas numériques ou booléennes, vous devez les échapper avec des guillemets simples ou utiliser la syntaxe d'auto-échappement <span class=""code"">{{ }}</span>.
+</p>
+<div class=""code""><span class=""comment""># Échappement avec des guillemets</span><br/>conditions: <span class=""string"">""'{cart.coupon}'=='test'""</span>,<br/>
+<br/>
+<span class=""comment""># Auto-échappement (depuis la version 2.4.5), {{cart.coupon}} sera remplacé par 'moncoupon' ou par null en fonction de sa valeur</span><br/>conditions: <span class=""string"">""{{cart.coupon}}=='test'""</span>,
+</div>
 
 <div class=""help-footer"">
 	<p><a href=""#"" onclick=""os2editor.help('summary');"">Sommaire</a></p>
@@ -361,6 +387,29 @@ fees: <span class=""string"">""{table {cart.price_excluding_tax} in 15.00:5.30, 
 <br/>
 <span class=""comment""># Les valeurs limites sont comparées à une valeur de référence définie par l'utilisateur</span><br/>
 fees: <span class=""string"">""{table ceil({cart.weight}/10) in 1:5.30, 2:6.50}""</span>,
+</div>
+
+<div class=""help-footer"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Sommaire</a></p>
+</div>
+"
+			"{os2editor.help.more.switch}","
+<div class=""help-header"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Sommaire</a></p>
+</div>
+
+<h4>Utilisation des ""switch"" (tables de correspondances)</h4>
+
+<p>
+	Dans un switch, on doit spécifier la valeur de référence. Pour cela, on peut utiliser une des variables disponibles.<br/>
+	Vous pouvez aussi utiliser une formule afin de définir une autre variable de référence.
+</p>
+
+<div class=""code""><span class=""comment""># Table de correpondance avec le coupon</span><br/>
+fees: <span class=""string"">""{switch {{cart.coupon}} in 'coupon1':5.30, 'coupon2':6.50, null:10.00, *:7.50}""</span>,<br/>
+<br/>
+<span class=""comment""># Table de correpondance avec le pays de destination</span><br/>
+fees: <span class=""string"">""{switch {{destination.country.code}} in 'FR':5.30, 'BE':6.50, 'DE':10.00, *:7.50}""</span>,
 </div>
 
 <div class=""help-footer"">
@@ -419,98 +468,50 @@ Liste des fonctions spéciales :
 <ul>
 	<li><b>min(x,y) :</b> calcule le minimum entre plusieurs valeurs (éventuellement plus de deux valeurs). Si l'une des valeurs est nulle, elle est ignorée.</li>
 	<li><b>max(x,y) :</b> calcule le maximum entre plusieurs valeurs (éventuellement plus de deux valeurs). Si l'une des valeurs est nulle, elle est ignorée.</li>
+	<li class=""new""><b>substr(string, start, length) :</b> retourne un segment de chaîne de caractères.</li>
+	<li class=""new""><b>in_array(value, array(value1, value2)) :</b> indique si une valeur appartient à un tableau.</li>
 </ul>
 
-<div class=""code""><span class=""comment""># Exemple d'utilisation de la fonction min pour proposé des frais de port gratuits<br/>
-# et un supplément pour les méthodes de transport plus rapides</span><br/>
+<div class=""code""><span class=""comment""># Exemple d'utilisation de la fonction min<br/>
+[...]<br/>
 {<br/>
-&nbsp;&nbsp;&nbsp;code: <span class=""string"">""courrier_suivi""</span>,<br/>
-&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Courrier suivi""</span>,<br/>
-&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""FR""</span>,<br/>
-&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{cart.price_including_tax}&lt;80""</span>,<br/>
-&nbsp;&nbsp;&nbsp;fees: <span class=""string"">""{table {cart.weight} in 0.050:2.21, 0.100:2.77, 0.500:4.60}""</span>,<br/>
-}<br/>
-<br/>
-{<br/>
-&nbsp;&nbsp;&nbsp;code: <span class=""string"">""courrier_suivi_offert""</span>,<br/>
-&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Frais de port offerts - Courrier suivi""</span>,<br/>
-&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""{courrier_suivi.destination}""</span>,<br/>
-&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{cart.price_including_tax}&gt;=80 and {cart.weight}&lt;=0.500""</span>,<br/>
-&nbsp;&nbsp;&nbsp;fees: 0.00,<br/>
-}<br/>
-<br/>
-{<br/>
-&nbsp;&nbsp;&nbsp;code: <span class=""string"">""lettre_recommandee""</span>,<br/>
-&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Lettre Recommandée""</span>,<br/>
-&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""FR""</span>,<br/>
-&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{cart.price_including_tax}&lt;80""</span>,<br/>
-&nbsp;&nbsp;&nbsp;fees: <span class=""string"">""{table {cart.weight} in 0.050:4.3,0.100:4.75,0.250:5.62,0.500:6.42,1.000:7.32,2.000:8.56,10.000:10.30}""</span>,<br/>
-}<br/>
-<br/>
-{<br/>
-&nbsp;&nbsp;&nbsp;code: <span class=""string"">""lettre_recommandee_offert""</span>,<br/>
-&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Frais de port offerts - Lettre Recommandée""</span>,<br/>
-&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""{lettre_recommandee.destination}""</span>,<br/>
-&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{cart.price_including_tax}&gt;=80 and {cart.weight}&gt;0.500 and {cart.weight}&lt;=10.000""</span>,<br/>
-&nbsp;&nbsp;&nbsp;fees: 0.00,<br/>
-}<br/>
-<br/>
-{<br/>
-&nbsp;&nbsp;&nbsp;code: <span class=""string"">""supplement_lettre_recommandee""</span>,<br/>
-&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Supplément Lettre Recommandée""</span>,<br/>
-&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""{lettre_recommandee.destination}""</span>,<br/>
-&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{courrier_suivi_offert.conditions}""</span>,<br/>
-&nbsp;&nbsp;&nbsp;fees: <span class=""string"">""{lettre_recommandee.fees} - {courrier_suivi.fees}""</span>,<br/>
-}<br/>
-<br/>
-{<br/>
-&nbsp;&nbsp;&nbsp;code: <span class=""string"">""colissimo""</span>,<br/>
-&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Colissimo""</span>,<br/>
-&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""FR""</span>,<br/>
-&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{cart.price_including_tax}&lt;80""</span>,<br/>
-&nbsp;&nbsp;&nbsp;fees: <span class=""string"">""{table {cart.weight} in 0.3:8.7,0.8:9.9,1.8:10.85,2.8:11.8,4.8:13.7,6.8:15.6,9.8:18.45,14.8:20.45,29.8:26.45}""</span>,<br/>
-}<br/>
-<br/>
-{<br/>
-&nbsp;&nbsp;&nbsp;code: <span class=""string"">""colissimo_offert""</span>,<br/>
-&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Frais de port offerts - Colissimo""</span>,<br/>
-&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""{colissimo.destination}""</span>,<br/>
-&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{cart.price_including_tax}&gt;=80 and {cart.weight}&gt;10 and {cart.weight}&lt;=29.8""</span>,<br/>
-&nbsp;&nbsp;&nbsp;fees: 0.00,<br/>
-}<br/>
-<br/>
-{<br/>
-&nbsp;&nbsp;&nbsp;code: <span class=""string"">""supplement_colissimo""</span>,<br/>
-&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Supplément Colissimo""</span>,<br/>
-&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""{colissimo.destination}""</span>,<br/>
-&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{courrier_suivi_offert.conditions} or {lettre_recommandee_offert.conditions}""</span>,<br/>
-&nbsp;&nbsp;&nbsp;fees: <span class=""string"">""{colissimo.fees} - min({courrier_suivi.fees},{lettre_recommandee.fees})""</span>,<br/>
-}<br/>
-<br/>
-{<br/>
-&nbsp;&nbsp;&nbsp;code: <span class=""string"">""chronopost""</span>,<br/>
-&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Chronopost""</span>,<br/>
-&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""FR""</span>,<br/>
-&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{cart.price_including_tax}&lt;80""</span>,<br/>
-&nbsp;&nbsp;&nbsp;fees: <span class=""string"">""{table {cart.weight} in 1:13.29, 2:13.99, 3:18.4, 4:19.24, 5:20.08, 6:20.92, 7:21.76, 8:22.6, 9:23.44, 10:24.28, 15:28.48, 20:32.68, 25:36.88, 30:41.08}""</span>,<br/>
-}<br/>
-<br/>
-{<br/>
-&nbsp;&nbsp;&nbsp;code: <span class=""string"">""chronopost_offert""</span>,<br/>
-&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Frais de port offerts - Chronopost""</span>,<br/>
-&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""FR""</span>,<br/>
-&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{cart.price_including_tax}&lt;80 and {cart.weight}&gt;29.8 and {cart.weight}&lt;=30""</span>,<br/>
-&nbsp;&nbsp;&nbsp;fees: 0.00,<br/>
-}<br/>
-<br/>
-{<br/>
-&nbsp;&nbsp;&nbsp;code: <span class=""string"">""supplement_chronopost""</span>,<br/>
-&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Supplément Chronopost""</span>,<br/>
+&nbsp;&nbsp;&nbsp;code: <span class=""string"">""exemple""</span>,<br/>
+&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Exemple""</span>,<br/>
 &nbsp;&nbsp;&nbsp;destination: <span class=""string"">""{chronopost.destination}""</span>,<br/>
-&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""{courrier_suivi_offert.conditions} or {lettre_recommandee_offert.conditions} or {colissimo_offert.conditions}""</span>,<br/>
-&nbsp;&nbsp;&nbsp;fees: <span class=""string"">""{chronopost.fees} - min({courrier_suivi.fees},{lettre_recommandee.fees},{colissimo.fees})""</span>,<br/>
-}
+&nbsp;&nbsp;&nbsp;fees: <span class=""string"">""min({cart.weight},{cart.price},{cart.quantity})""</span>,<br/>
+}<br/>
+<br/>
+<span class=""comment""># Exemple d'utilisation de la fonction substr *<br/>
+{<br/>
+&nbsp;&nbsp;&nbsp;code: <span class=""string"">""free_shipping""</span>,<br/>
+&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Port offert""</span>,<br/>
+&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""FR""</span>,<br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""substr('{cart.coupon}', 0, 5)=='free_'""</span>,<br/>
+&nbsp;&nbsp;&nbsp;fees: <span class=""string"">""0""</span>,<br/>
+}<br/>
+<br/>
+<span class=""comment""># Exemple d'utilisation de la fonction in_array avec des chaînes de caractères *<br/>
+{<br/>
+&nbsp;&nbsp;&nbsp;code: <span class=""string"">""free_shipping""</span>,<br/>
+&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Port offert""</span>,<br/>
+&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""FR""</span>,<br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""in_array({{cart.coupon}}, array('free1', 'free2'))""</span>,<br/>
+&nbsp;&nbsp;&nbsp;fees: <span class=""string"">""0""</span>,<br/>
+}<br/>
+<br/>
+<span class=""comment""># Exemple d'utilisation de la fonction in_array avec des nombres<br/>
+{<br/>
+&nbsp;&nbsp;&nbsp;code: <span class=""string"">""free_shipping""</span>,<br/>
+&nbsp;&nbsp;&nbsp;label: <span class=""string"">""Port offert""</span>,<br/>
+&nbsp;&nbsp;&nbsp;destination: <span class=""string"">""FR""</span>,<br/>
+&nbsp;&nbsp;&nbsp;conditions: <span class=""string"">""in_array({cart.quantity}, array(10,20,30))""</span>,<br/>
+&nbsp;&nbsp;&nbsp;fees: <span class=""string"">""0""</span>,<br/>
+}<br/>
 </div>
+
+<p class=""new"">
+	* Concernant l'échappement des chaînes de caractères, se référer à l'<a href=""#"" onclick=""os2editor.help('more.formulas');"">inititation aux formules</a>. 
+</p>
 
 <div class=""help-footer"">
 	<p><a href=""#"" onclick=""os2editor.help('summary');"">Sommaire</a></p>
@@ -525,6 +526,9 @@ Liste des fonctions spéciales :
 
 <p>
 Il est possible d'utiliser les attributs ou les options des produits à l'aide de la syntaxe ci-dessous.
+</p>
+<p>
+	Pour utiliser les catégories des produits dans les conditions, voir la <a href=""#"" onclick=""os2editor.help('more.categories');"">rubrique explicative</a>.
 </p>
 <p>
 Vous pouvez utiliser cette technique dans les propriétés 'conditions' et 'fees'.
@@ -567,7 +571,11 @@ Liste des préfixes possibles :
 Liste des propriétés possibles :
 </p>
 <ul>
-	<li class=""new""><b>product.quantity :</b> quantité de l'article dans le panier</li>
+	<li><b>product.quantity :</b> quantité de l'article dans le panier</li>
+	<li><b>product.category :</b> nom de la première catégorie du produit</li>
+	<li><b>product.category.id :</b> id de la première catégorie du produit</li>
+	<li class=""new""><b>product.attribute_set :</b> nom du jeu d'attributs</li>
+	<li class=""new""><b>product.attribute_set.id :</b> id du jeu d'attributs</li>
 	<li><b>product.attribute.* :</b> attribut<br/>Liste d'attributs intéressants :
 		<ul>
 			<li><b>sku :</b> la référence</li>
@@ -622,6 +630,9 @@ conditions: <span class=""string"">""{count products where product.attribute.col
 	Le résultat global d'une boucle foreach est la somme des résultats de chaque passage dans la boucle.
 </p>
 <p>
+	Pour utiliser les catégories des produits comme itération ou à l'intérieur des boucles foreach, voir la <a href=""#"" onclick=""os2editor.help('more.categories');"">rubrique explicative</a>.
+</p>
+<p>
 	A l'intérieur d'une boucle foreach, il est possible d'utiliser de nouvelles variables :
 </p>
 <ul>
@@ -634,6 +645,10 @@ conditions: <span class=""string"">""{count products where product.attribute.col
 <ul>
 	<li><b>{product.weight}</b>: poids de l'article sélectionné</li>
 	<li><b>{product.quantity}</b>: quantité de l'article sélectionné</li>
+	<li><b>{product.category}</b>: nom de la première catégorie du produit</li>
+	<li><b>{product.category.id}</b>: id de la première catégorie du produit</li>
+	<li class=""new""><b>{product.attribute_set}</b>: nom du jeu d'attributs</li>
+	<li class=""new""><b>{product.attribute_set.id}</b>: id du jeu d'attributs</li>
 	<li><b>{product.attribute.*}</b>: attribut de l'article sélectionné<br/>
 		<span class=""new"">Quelques pseudos-attributs sont également disponibles pour faciliter certains calculs :
 		<ul>
@@ -651,6 +666,50 @@ fees: <span class=""string"">""{foreach product.attribute.code_origin}{table {se
 <br/>
 <span class=""comment""># Calcul individuel des frais de port</span><br/>
 fees: <span class=""string"">""{foreach product.attribute.sku}{product.attribute.shipping}*{product.quantity}{/foreach}""</span>,<br/>
+</div>
+
+<div class=""help-footer"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Sommaire</a></p>
+</div>
+"
+			"{os2editor.help.more.categories}","
+<div class=""help-header"">
+	<p><a href=""#"" onclick=""os2editor.help('summary');"">Sommaire</a></p>
+</div>
+
+<h4>Utilisation des catégories dans les boucles foreach ou dans les fonctions spéciales</h4>
+
+<p>
+	Depuis la version 2.4.2, il est possible d'utiliser les catégories des produits dans les formules.
+</p>
+<p>
+	<strong>Attention, il est à noter que dans Magento, un produit peut être dans plusieurs catégories.</strong> Faites donc particulièrement attention à la façon dont vous utilisez cette propriété.
+</p>
+<p>
+	Voici quelques exemples d'utilisation :
+</p>
+<div class=""code""><span class=""comment""># Boucle foreach dont l'itération se fait sur la catégorie</span><br/>
+fees: <span class=""string"">""{foreach product.categories}{selection.weight}{/foreach}""</span>,<br/>
+<br/>
+<span class=""comment""># Utilisation de la catégorie à l'intérieur d'une boucle foreach</span><br/>
+fees: <span class=""string"">""{foreach product.attribute.sku}({product.category}=='Test' ? 2.00 : 1.00)*{product.quantity}{/foreach}""</span>,<br/>
+<span class=""comment""># Utilisation de l'id de la catégorie à l'intérieur d'une boucle foreach</span><br/>
+fees: <span class=""string"">""{foreach product.attribute.sku}({product.category.id}==12 ? 2.00 : 1.00)*{product.quantity}{/foreach}""</span>,<br/>
+<br/>
+<span class=""comment""># Somme des attributs weight des produits de la catégorie 'Test'</span>,<br/>
+<span class=""comment""># La fonction in_array() est utilisée car product.categories retourne un tableau</span><br/>
+fees: <span class=""string"">""{sum product.attribute.weight where in_array('Test', product.categories)}""</span>,<br/>
+<span class=""comment""># Somme des attributs weight des produits de la catégorie dont l'id est 12</span>,<br/>
+<span class=""comment""># La fonction in_array() est utilisée car product.categories.id retourne un tableau</span><br/>
+fees: <span class=""string"">""{sum product.attribute.weight where in_array(12, product.categories.id)}""</span>,<br/>
+<br/>
+<span class=""comment""># Somme des attributs weight des produits dont la première catégorie est 'Test'</span><br/>
+<span class=""comment""># (préférez la solution ci-dessus si vos produits sont dans plusieurs catégories)</span><br/>
+fees: <span class=""string"">""{sum product.attribute.weight where product.category=='Test'}""</span>,<br/>
+<span class=""comment""># Somme des attributs weight des produits dont l'id de la première catégorie est 12</span><br/>
+<span class=""comment""># (préférez la solution ci-dessus si vos produits sont dans plusieurs catégories)</span><br/>
+fees: <span class=""string"">""{sum product.attribute.weight where product.category.id==12}""</span>,<br/>
+<br/>
 </div>
 
 <div class=""help-footer"">

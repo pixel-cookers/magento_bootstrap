@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Checkout
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -32,6 +32,9 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
         'shipping-method' => '_getShippingMethodsHtml',
         'review'          => '_getReviewHtml',
     );
+
+    /** @var Mage_Sales_Model_Order */
+    protected $_order;
 
     /**
      * @return Mage_Checkout_OnepageController
@@ -45,6 +48,12 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
         if ($checkoutSessionQuote->getIsMultiShipping()) {
             $checkoutSessionQuote->setIsMultiShipping(false);
             $checkoutSessionQuote->removeAllAddresses();
+        }
+
+        if(!$this->_canShowForUnregisteredUsers()){
+            $this->norouteAction();
+            $this->setFlag('',self::FLAG_NO_DISPATCH,true);
+            return;
         }
 
         return $this;
@@ -122,6 +131,7 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
         $layout->generateXml();
         $layout->generateBlocks();
         $output = $layout->getOutput();
+        Mage::getSingleton('core/translate_inline')->processResponseBody($output);
         return $output;
     }
 
@@ -161,7 +171,10 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
             return;
         }
         if (!$quote->validateMinimumAmount()) {
-            $error = Mage::getStoreConfig('sales/minimum_order/error_message');
+            $error = Mage::getStoreConfig('sales/minimum_order/error_message') ?
+                Mage::getStoreConfig('sales/minimum_order/error_message') :
+                Mage::helper('checkout')->__('Subtotal must exceed minimum order amount');
+
             Mage::getSingleton('checkout/session')->addError($error);
             $this->_redirect('checkout/cart');
             return;
@@ -374,6 +387,7 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
                 Mage::dispatchEvent('checkout_controller_onepage_save_shipping_method',
                         array('request'=>$this->getRequest(),
                             'quote'=>$this->getOnepage()->getQuote()));
+                $this->getOnepage()->getQuote()->collectTotals();
                 $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
 
                 $result['goto_section'] = 'payment';
@@ -382,6 +396,7 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
                     'html' => $this->_getPaymentMethodsHtml()
                 );
             }
+            $this->getOnepage()->getQuote()->collectTotals()->save();
             $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
         }
     }
@@ -434,9 +449,6 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
         $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
     }
 
-    /* @var $_order Mage_Sales_Model_Order */
-    protected $_order;
-
     /**
      * Get Order by quoteId
      *
@@ -461,12 +473,12 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
     protected function _initInvoice()
     {
         $items = array();
-        foreach ($this->getOnepage()->getQuote()->getAllItems() as $item) {
-            $items[$item->getId()] = $item->getQty();
+        foreach ($this->_getOrder()->getAllItems() as $item) {
+            $items[$item->getId()] = $item->getQtyOrdered();
         }
         /* @var $invoice Mage_Sales_Model_Service_Order */
         $invoice = Mage::getModel('sales/service_order', $this->_getOrder())->prepareInvoice($items);
-        $invoice->setEmailSent(true);
+        $invoice->setEmailSent(true)->register();
 
         Mage::register('current_invoice', $invoice);
         return $invoice;
@@ -497,18 +509,6 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
                 $this->getOnepage()->getQuote()->getPayment()->importData($data);
             }
             $this->getOnepage()->saveOrder();
-
-            $storeId = Mage::app()->getStore()->getId();
-            $paymentHelper = Mage::helper("payment");
-            $zeroSubTotalPaymentAction = $paymentHelper->getZeroSubTotalPaymentAutomaticInvoice($storeId);
-            if ($paymentHelper->isZeroSubTotal($storeId)
-                    && $this->_getOrder()->getGrandTotal() == 0
-                    && $zeroSubTotalPaymentAction == Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE_CAPTURE
-                    && $paymentHelper->getZeroSubTotalOrderStatus($storeId) == 'pending') {
-                $invoice = $this->_initInvoice();
-                $invoice->getOrder()->setIsInProcess(true);
-                $invoice->save();
-            }
 
             $redirectUrl = $this->getOnepage()->getCheckout()->getRedirectUrl();
             $result['success'] = true;
@@ -574,5 +574,18 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
     {
         $data = $this->_filterDates($data, array('dob'));
         return $data;
+    }
+
+    /**
+     * Check can page show for unregistered users
+     *
+     * @return boolean
+     */
+    protected function _canShowForUnregisteredUsers()
+    {
+        return Mage::getSingleton('customer/session')->isLoggedIn()
+            || $this->getRequest()->getActionName() == 'index'
+            || Mage::helper('checkout')->isAllowedGuestCheckout($this->getOnepage()->getQuote())
+            || !Mage::helper('checkout')->isCustomerMustBeLogged();
     }
 }

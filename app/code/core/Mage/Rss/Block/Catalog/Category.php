@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Rss
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -77,7 +77,7 @@ class Mage_Rss_Block_Catalog_Category extends Mage_Rss_Block_Catalog_Abstract
                 ;
                 $productCollection = Mage::getModel('catalog/product')->getCollection();
 
-                $currentyCateogry = $layer->setCurrentCategory($category);
+                $currentCategory = $layer->setCurrentCategory($category);
                 $layer->prepareProductCollection($productCollection);
                 $productCollection->addCountToCategories($_collection);
 
@@ -85,7 +85,7 @@ class Mage_Rss_Block_Catalog_Category extends Mage_Rss_Block_Catalog_Abstract
                 /*
                 only load latest 50 products
                 */
-                $_productCollection = $currentyCateogry
+                $_productCollection = $currentCategory
                     ->getProductCollection()
                     ->addAttributeToSort('updated_at','desc')
                     ->setVisibility(Mage::getSingleton('catalog/product_visibility')->getVisibleInCatalogIds())

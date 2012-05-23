@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Index
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -49,6 +49,14 @@ abstract class Mage_Index_Model_Resource_Abstract extends Mage_Core_Model_Resour
      * @var bool
      */
     protected $_isDisableKeys = true;
+
+    /**
+     * Whether table changes are allowed
+     *
+     * @deprecated after 1.6.1.0
+     * @var bool
+     */
+    protected $_allowTableChanges = true;
 
     /**
      * Reindex all
@@ -97,12 +105,17 @@ abstract class Mage_Index_Model_Resource_Abstract extends Mage_Core_Model_Resour
     public function syncData()
     {
         $this->beginTransaction();
-        /**
-         * Can't use truncate because of transaction
-         */
-        $this->_getWriteAdapter()->delete($this->getMainTable());
-        $this->insertFromTable($this->getIdxTable(), $this->getMainTable(), false);
-        $this->commit();
+        try {
+            /**
+             * Can't use truncate because of transaction
+             */
+            $this->_getWriteAdapter()->delete($this->getMainTable());
+            $this->insertFromTable($this->getIdxTable(), $this->getMainTable(), false);
+            $this->commit();
+        } catch (Exception $e) {
+            $this->rollBack();
+            throw $e;
+        }
         return $this;
     }
 
@@ -161,9 +174,6 @@ abstract class Mage_Index_Model_Resource_Abstract extends Mage_Core_Model_Resour
             $to     = $this->_getWriteAdapter();
         }
 
-        if ($this->useDisableKeys()) {
-            $to->disableTableKeys($destTable);
-        }
         if ($from === $to) {
             $query = $select->insertFromSelect($destTable, $columns);
             $to->query($query);
@@ -184,9 +194,7 @@ abstract class Mage_Index_Model_Resource_Abstract extends Mage_Core_Model_Resour
                 $to->insertArray($destTable, $columns, $data);
             }
         }
-        if ($this->useDisableKeys()) {
-            $to->enableTableKeys($destTable);
-        }
+
         return $this;
     }
 
@@ -225,5 +233,44 @@ abstract class Mage_Index_Model_Resource_Abstract extends Mage_Core_Model_Resour
     public function clearTemporaryIndexTable()
     {
         $this->_getWriteAdapter()->delete($this->getIdxTable());
+    }
+
+    /**
+     * Set whether table changes are allowed
+     *
+     * @deprecated after 1.6.1.0
+     * @param bool $value
+     * @return Mage_Index_Model_Resource_Abstract
+     */
+    public function setAllowTableChanges($value = true)
+    {
+        $this->_allowTableChanges = $value;
+        return $this;
+    }
+
+    /**
+     * Disable Main Table keys
+     *
+     * @return Mage_Index_Model_Resource_Abstract
+     */
+    public function disableTableKeys()
+    {
+        if ($this->useDisableKeys()) {
+            $this->_getWriteAdapter()->disableTableKeys($this->getMainTable());
+        }
+        return $this;
+    }
+
+    /**
+     * Enable Main Table keys
+     *
+     * @return Mage_Index_Model_Resource_Abstract
+     */
+    public function enableTableKeys()
+    {
+        if ($this->useDisableKeys()) {
+            $this->_getWriteAdapter()->enableTableKeys($this->getMainTable());
+        }
+        return $this;
     }
 }

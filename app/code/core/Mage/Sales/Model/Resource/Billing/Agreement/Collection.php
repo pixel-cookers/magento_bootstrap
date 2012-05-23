@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Sales
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -40,9 +40,11 @@ class Mage_Sales_Model_Resource_Billing_Agreement_Collection extends Mage_Core_M
      * @var array
      */
     protected $_map = array('fields' => array(
-        'customer_email'     => 'ce.email',
-        'customer_firstname' => 'firstname.value',
-        'customer_lastname'  => 'lastname.value'
+        'customer_email'       => 'ce.email',
+        'customer_firstname'   => 'firstname.value',
+        'customer_lastname'    => 'lastname.value',
+        'agreement_created_at' => 'main_table.created_at',
+        'agreement_updated_at' => 'main_table.updated_at',
     ));
 
     /**

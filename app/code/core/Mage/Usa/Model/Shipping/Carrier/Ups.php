@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Usa
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -272,6 +272,8 @@ class Mage_Usa_Model_Shipping_Carrier_Ups
 
         $r->setIsReturn($request->getIsReturn());
 
+        $r->setBaseSubtotalInclTax($request->getBaseSubtotalInclTax());
+
         $this->_rawRequest = $r;
 
         return $this;
@@ -487,7 +489,7 @@ class Mage_Usa_Model_Shipping_Carrier_Ups
     /**
      * Get configuration data of carrier
      *
-     * @param strin $type
+     * @param string $type
      * @param string $code
      * @return array|bool
      */
@@ -703,6 +705,7 @@ class Mage_Usa_Model_Shipping_Carrier_Ups
                                 '14', // Next Day Air Early AM
                                 '02', // 2nd Day Air
                                 '59', // 2nd Day Air AM
+                                '13', // Next Day Air Saver
                             )
                         ),
                         'from_us' => array(
@@ -739,6 +742,7 @@ class Mage_Usa_Model_Shipping_Carrier_Ups
                                 '14', // Next Day Air Early AM
                                 '02', // 2nd Day Air
                                 '59', // 2nd Day Air AM
+                                '13', // Next Day Air Saver
                             )
                         ),
                         'from_us' => array(
@@ -1005,10 +1009,7 @@ XMLRequest;
                             if (in_array($responseCurrencyCode, $allowedCurrencies)) {
                                 $cost = (float) $cost * $this->_getBaseCurrencyRate($responseCurrencyCode);
                             } else {
-                                $errorTitle = Mage::helper('directory')
-                                    ->__('Can\'t convert rate from "%s-%s".',
-                                        $responseCurrencyCode,
-                                        $this->_request->getPackageCurrency()->getCode());
+                                $errorTitle = Mage::helper('directory')->__('Can\'t convert rate from "%s-%s".', $responseCurrencyCode, $this->_request->getPackageCurrency()->getCode());
                                 $error = Mage::getModel('shipping/rate_result_error');
                                 $error->setCarrier('ups');
                                 $error->setCarrierTitle($this->getConfigData('title'));
@@ -1696,10 +1697,22 @@ XMLAuth;
                 $containerTypes = $containerTypes + array(
                     '03'     => Mage::helper('usa')->__('UPS Tube'),
                     '04'    => Mage::helper('usa')->__('PAK'),
-                    '21'    => Mage::helper('usa')->__('UPS Express Box'),
+                    '2a'    => Mage::helper('usa')->__('Small Express Box'),
+                    '2b'    => Mage::helper('usa')->__('Medium Express Box'),
+                    '2c'    => Mage::helper('usa')->__('Large Express Box'),
                 );
             }
             return array('00' => Mage::helper('usa')->__('Customer Packaging')) + $containerTypes;
+        } elseif ($countryShipper == self::USA_COUNTRY_ID && $countryRecipient == self::PUERTORICO_COUNTRY_ID
+            && ($method == '03' // UPS Ground
+            || $method == '02' // UPS Second Day Air
+            || $method == '01' // UPS Next Day Air
+        )) {
+            // Container types should be the same as for domestic
+            $params->setCountryRecipient(self::USA_COUNTRY_ID);
+            $containerTypes = $this->_getAllowedContainers($params);
+            $params->setCountryRecipient($countryRecipient);
+            return $containerTypes;
         }
         return $this->_getAllowedContainers($params);
     }
@@ -1720,7 +1733,7 @@ XMLAuth;
         return $result;
 
     }
-    
+
     /**
      * Return structured data of containers witch related with shipping methods
      *

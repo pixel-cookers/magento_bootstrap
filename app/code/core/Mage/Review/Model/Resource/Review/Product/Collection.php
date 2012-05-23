@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Review
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -318,8 +318,9 @@ class Mage_Review_Model_Resource_Review_Product_Collection extends Mage_Catalog_
     public function getSelectCountSql()
     {
         $select = parent::getSelectCountSql();
-
-        $select->reset(Zend_Db_Select::HAVING);
+        $select->reset(Zend_Db_Select::COLUMNS)
+            ->columns('COUNT(e.entity_id)')
+            ->reset(Zend_Db_Select::HAVING);
 
         return $select;
     }
@@ -380,7 +381,7 @@ class Mage_Review_Model_Resource_Review_Product_Collection extends Mage_Catalog_
             case 'type':
                 if ($condition == 1) {
                     $conditionParts = array(
-                        $this->_getConditionSql('rdt.customer_id', array('is' => 'NULL')),
+                        $this->_getConditionSql('rdt.customer_id', array('is' => new Zend_Db_Expr('NULL'))),
                         $this->_getConditionSql('rdt.store_id', array('eq' => Mage_Core_Model_App::ADMIN_STORE_ID))
                     );
                     $conditionSql = implode(' AND ', $conditionParts);
@@ -388,7 +389,7 @@ class Mage_Review_Model_Resource_Review_Product_Collection extends Mage_Catalog_
                     $conditionSql = $this->_getConditionSql('rdt.customer_id', array('gt' => 0));
                 } else {
                     $conditionParts = array(
-                        $this->_getConditionSql('rdt.customer_id', array('is' => 'NULL')),
+                        $this->_getConditionSql('rdt.customer_id', array('is' => new Zend_Db_Expr('NULL'))),
                         $this->_getConditionSql('rdt.store_id', array('neq' => Mage_Core_Model_App::ADMIN_STORE_ID))
                     );
                     $conditionSql = implode(' AND ', $conditionParts);

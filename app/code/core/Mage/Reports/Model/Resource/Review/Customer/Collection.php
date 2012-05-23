@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Reports
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -91,6 +91,7 @@ class Mage_Reports_Model_Resource_Review_Customer_Collection extends Mage_Review
                 implode(' AND ', $lastnameCondition),
                 array())
             ->columns(array(
+                'customer_id' => 'detail.customer_id',
                 'customer_name' => $customerFullname,
                 'review_cnt'    => 'COUNT(main_table.review_id)'))
             ->group('detail.customer_id');

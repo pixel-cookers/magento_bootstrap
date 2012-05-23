@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Adminhtml
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -87,14 +87,20 @@ class Mage_Adminhtml_Block_Sales_Order_Create_Search_Grid extends Mage_Adminhtml
         return $this;
     }
 
+    /**
+     * Prepare collection to be displayed in the grid
+     *
+     * @return Mage_Adminhtml_Block_Sales_Order_Create_Search_Grid
+     */
     protected function _prepareCollection()
     {
         $attributes = Mage::getSingleton('catalog/config')->getProductAttributes();
-        $collection = Mage::getModel('catalog/product')->getCollection()
+        /* @var $collection Mage_Catalog_Model_Resource_Product_Collection */
+        $collection = Mage::getModel('catalog/product')->getCollection();
+        $collection
             ->setStore($this->getStore())
             ->addAttributeToSelect($attributes)
             ->addAttributeToSelect('sku')
-            ->addMinimalPrice()
             ->addStoreFilter()
             ->addAttributeToFilter('type_id', array_keys(
                 Mage::getConfig()->getNode('adminhtml/sales/order/create/available_product_types')->asArray()
