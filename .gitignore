@@ -11,6 +11,51 @@
 /var/locks
 /var/resource_config.json
 /loginfo.txt
-/psd
 /export
 /downloader/connec.cfg
+/vhost_1.txt
+
+# netbeans project files
+nbproject/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+# SublimeText project files
+/*.sublime-project
+*.sublime-workspace
+
+# Eclipse project files
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+# External tool builders
+.externalToolBuilders/
+# Locally stored "Eclipse launch configurations"
+*.launch
+# CDT-specific
+.cproject
+# PDT-specific
+.buildpath
+
+# OSX files
+.DS_Store
+# Thumbnails
+._*
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
